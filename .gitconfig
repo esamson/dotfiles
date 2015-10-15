@@ -1,0 +1,13 @@
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[user]
+	name = Edward Samson
+	email = edward@samson.ph
+[alias]
+	ff = !sh -c 'branch=$(git symbolic-ref HEAD | cut -d '/' -f 3) && git merge --ff-only origin/$branch'
+[push]
+	default = simple
+[init]
+	templatedir = ~/.gittemplate

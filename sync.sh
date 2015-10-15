@@ -13,7 +13,7 @@ function syncDown() {
     fi
 
     find . -type f \
-        -not -path './.git*' \
+        -not -path './.git/*' \
         -not -path './LICENSE' \
         -not -path './README.md' \
         -not -path './crontab' \

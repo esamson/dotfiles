@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+remote_url="$(git config --get --local remote.origin.url)"
+
+if [[ "$remote_url" =~ "LoyalSphere" ]]; then
+    git config --local user.email "edward.samson@stellarloyalty.com"
+fi
+
