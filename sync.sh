@@ -4,12 +4,17 @@ cd "$(dirname "${BASH_SOURCE}")"
 
 # Copy existing dotfiles into this repo
 function syncDown() {
+    if [[ -n $(git status -s) ]]; then
+        echo "$0: Uncommited changes in dotfiles. Commit them first."
+        exit 1
+    fi
+
     crontab -l > crontab
 
     TMPFILE=`mktemp -t syncup` || exit 1
     if [ $? -ne 0 ]; then
         echo "$0: Can't create temp file, exiting..."
-        exit 1
+        exit 2
     fi
 
     find . -type f \
@@ -27,7 +32,12 @@ function syncDown() {
         --archive ~ .
 
     rm $TMPFILE
-    git diff
+    if [[ -n $(git status -s) ]]; then
+        echo "$0: Changes found in $HOME. Review and commit."
+        git diff
+    else
+        echo "$0: $HOME is up to date."
+    fi
 }
 
 # Install dotfiles into home folder
