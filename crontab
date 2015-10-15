@@ -1,0 +1,3 @@
+# Purge ~/Downloads
+12 12 * * *     $HOME/.local/bin/purgeOld $HOME/Downloads
+

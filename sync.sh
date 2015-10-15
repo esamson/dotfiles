@@ -4,6 +4,8 @@ cd "$(dirname "${BASH_SOURCE}")"
 
 # Copy existing dotfiles into this repo
 function syncDown() {
+    crontab -l > crontab
+
     TMPFILE=`mktemp -t syncup` || exit 1
     if [ $? -ne 0 ]; then
         echo "$0: Can't create temp file, exiting..."
@@ -14,6 +16,7 @@ function syncDown() {
         -not -path './.git*' \
         -not -path './LICENSE' \
         -not -path './README.md' \
+        -not -path './crontab' \
         -not -path './sync.sh' \
         | sed "s|^\./||" > $TMPFILE
 
@@ -29,10 +32,13 @@ function syncDown() {
 
 # Install dotfiles into home folder
 function syncUp() {
+    crontab crontab
+
     rsync \
         --exclude ".git/" \
         --exclude "LICENSE" \
         --exclude "README.md" \
+        --exclude "crontab" \
         --exclude "sync.sh" \
         --verbose \
         --human-readable \

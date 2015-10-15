@@ -1,0 +1,18 @@
+#!/bin/bash
+
+DIR=$1
+LOG=$DIR/.purge.log
+TRASH_CMD=trash-put
+
+if [ "$(uname)" == "Darwin" ]; then
+    # On OS X, use http://hasseg.org/trash/
+    TRASH_CMD="/usr/local/bin/trash -a"
+fi
+
+echo "===== $(date) =====" >> $LOG
+echo "Purging old entries in $DIR" >> $LOG
+echo >> $LOG
+
+find $DIR -mindepth 1 -maxdepth 1 -ctime +7 >> $LOG
+(time find $DIR -mindepth 1 -maxdepth 1 -ctime +7 -exec $TRASH_CMD "{}" \;) >> $LOG 2>&1
+echo >> $LOG
