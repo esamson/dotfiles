@@ -46,6 +46,8 @@ function syncUp() {
 
     rsync \
         --exclude ".git/" \
+        --exclude ".gitmodules" \
+        --exclude "**/.git" \
         --exclude "LICENSE" \
         --exclude "README.md" \
         --exclude "crontab" \
