@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#
+# Asynchronous rm.
+# Instead of deleting, just move to ~/Downloads. Let `purgeOld` clean it up
+# eventually.
+ 
+FILES=$*
+DIR=~/Downloads
+
+mv $FILES $DIR &
+
