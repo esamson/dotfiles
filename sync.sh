@@ -54,6 +54,7 @@ function syncUp() {
         --exclude "sync.sh" \
         --verbose \
         --human-readable \
+        --no-perms \
         --archive . ~
     source ~/.bash_profile
 }
