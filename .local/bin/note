@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+#
+# Note taking.
+ 
+DIR=~/Documents/notes
+DATE=`date "+%Y-%m-%d"`
+TITLE=notes
+if [ $# -gt 0 ]; then
+    TITLE=$*
+fi
+FILE=$DATE'_'$TITLE'.md'
+
+edit() {
+    if hash mvim 2>/dev/null; then
+        editor=mvim
+    elif hash gvim 2>/dev/null; then
+        editor=gvim
+    elif hash $EDITOR 2>/dev/null; then
+        editor=$EDITOR
+    else
+        echo 'No editor. Set EDITOR env first.'
+        exit 1
+    fi
+
+    $editor "$@"
+}
+
+edit "$DIR/$FILE"
