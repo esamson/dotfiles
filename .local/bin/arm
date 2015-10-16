@@ -5,7 +5,8 @@
 # eventually.
  
 FILES=$*
-DIR=~/Downloads
+DIR=~/Downloads/.arm-`date "+%Y-%m-%d_%H-%M-%S"`-"$RANDOM"
 
+mkdir -p $DIR
 mv $FILES $DIR &
 
