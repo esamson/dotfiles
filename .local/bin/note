@@ -8,7 +8,7 @@ TITLE=notes
 if [ $# -gt 0 ]; then
     TITLE=$*
 fi
-FILE=$DATE'_'$TITLE'.md'
+FILE=$DATE' '$TITLE'.md'
 
 edit() {
     if hash mvim 2>/dev/null; then
