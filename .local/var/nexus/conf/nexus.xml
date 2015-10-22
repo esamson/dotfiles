@@ -461,6 +461,54 @@
         <autoBlockActive>true</autoBlockActive>
       </externalConfiguration>
     </repository>
+    <repository>
+      <id>rubygems.org</id>
+      <name>RubyGems.org</name>
+      <providerRole>org.sonatype.nexus.proxy.repository.Repository</providerRole>
+      <providerHint>rubygems-proxy</providerHint>
+      <localStatus>IN_SERVICE</localStatus>
+      <notFoundCacheActive>true</notFoundCacheActive>
+      <notFoundCacheTTL>1440</notFoundCacheTTL>
+      <userManaged>true</userManaged>
+      <exposed>true</exposed>
+      <browseable>true</browseable>
+      <writePolicy>READ_ONLY</writePolicy>
+      <localStorage>
+        <provider>file</provider>
+      </localStorage>
+      <remoteStorage>
+        <url>https://rubygems.org/</url>
+      </remoteStorage>
+      <externalConfiguration>
+        <repositoryPolicy>MIXED</repositoryPolicy>
+        <fileTypeValidation>true</fileTypeValidation>
+        <downloadRemoteIndex>false</downloadRemoteIndex>
+        <artifactMaxAge>-1</artifactMaxAge>
+        <metadataMaxAge>1440</metadataMaxAge>
+        <itemMaxAge>1440</itemMaxAge>
+        <autoBlockActive>true</autoBlockActive>
+      </externalConfiguration>
+    </repository>
+    <repository>
+      <id>gems</id>
+      <name>Ruby Gems</name>
+      <providerRole>org.sonatype.nexus.proxy.repository.GroupRepository</providerRole>
+      <providerHint>rubygems-group</providerHint>
+      <localStatus>IN_SERVICE</localStatus>
+      <notFoundCacheTTL>15</notFoundCacheTTL>
+      <userManaged>true</userManaged>
+      <exposed>true</exposed>
+      <browseable>true</browseable>
+      <writePolicy>READ_ONLY</writePolicy>
+      <localStorage>
+        <provider>file</provider>
+      </localStorage>
+      <externalConfiguration>
+        <memberRepositories>
+          <memberRepository>rubygems.org</memberRepository>
+        </memberRepositories>
+      </externalConfiguration>
+    </repository>
   </repositories>
   <repositoryGrouping>
     <pathMappings>
@@ -568,7 +616,7 @@
     <hostname>smtp-host</hostname>
     <port>25</port>
     <username>smtp-username</username>
-    <password>{k8aoO/bsC+YH6myUmpUDg/VLNep/9C0OlCJjEYw73dI=}</password>
+    <password>{IqJy1SrHx1sHR36u8G/v8frU/Hg1d0z17I30ds/PKXQ=}</password>
     <systemEmailAddress>system@nexus.org</systemEmailAddress>
   </smtpConfiguration>
   <notification />
