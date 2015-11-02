@@ -34,3 +34,5 @@ set backupskip=/tmp/*,/private/tmp/*
 " Disable markdown folding
 let g:vim_markdown_folding_disabled=1
 
+" Toggle NERDTree
+map <leader>n :NERDTreeToggle<CR>
