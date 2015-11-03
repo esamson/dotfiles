@@ -19,6 +19,8 @@ function syncDown() {
 
     find . -type f \
         -not -path './.git/*' \
+        -not -path './.gitmodules' \
+        -not -path '*/.git' \
         -not -path './LICENSE' \
         -not -path './README.md' \
         -not -path './crontab' \
@@ -45,13 +47,13 @@ function syncUp() {
     crontab crontab
 
     rsync \
-        --exclude ".git/" \
-        --exclude ".gitmodules" \
+        --exclude "/.git/" \
+        --exclude "/.gitmodules" \
         --exclude "**/.git" \
-        --exclude "LICENSE" \
-        --exclude "README.md" \
-        --exclude "crontab" \
-        --exclude "sync.sh" \
+        --exclude "/LICENSE" \
+        --exclude "/README.md" \
+        --exclude "/crontab" \
+        --exclude "/sync.sh" \
         --verbose \
         --human-readable \
         --no-perms \
