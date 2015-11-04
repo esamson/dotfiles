@@ -4,11 +4,33 @@
  
 DIR=~/Documents/notes
 DATE=`date "+%Y-%m-%d"`
-TITLE=notes
+FILE=$DATE' notes.md'
+
 if [ $# -gt 0 ]; then
     TITLE=$*
+
+    found="$TMPDIR"notes.found.$RANDOM
+    find $DIR -iname "*$TITLE*" | sed "s|$DIR/||" > $found
+
+    declare -a notes
+    count=0
+    while read note; do
+        notes[$count]=$note
+        count=$((count + 1))
+    done <$found
+    rm $found
+
+    if [ ${#notes[@]} -eq 0 ]; then
+        FILE=$DATE' '$TITLE'.md'
+    elif [ ${#notes[@]} -eq 1 ]; then
+        FILE=${notes[0]}
+    else
+        find $DIR -iname "*$TITLE*" | sed "s|$DIR/||"
+        echo
+        echo "Too many matches, be more specific."
+        exit 1
+    fi
 fi
-FILE=$DATE' '$TITLE'.md'
 
 edit() {
     if hash mvim 2>/dev/null; then
