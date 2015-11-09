@@ -9,6 +9,8 @@ filetype plugin indent on
 
 " On OS X, Preview using
 " https://chrome.google.com/webstore/detail/markdown-preview-plus/febilkbfcbhebfnokafefeacimjdckgl
+" See dotfiles/.vim/resources/GithubWhite.css for custom theme with no default
+" background color -- better for copy-pasting into email.
 nmap <leader>p :w \| :silent !open -a /Applications/Google\ Chrome.app "%"<CR>
 
 set hlsearch
