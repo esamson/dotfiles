@@ -8,7 +8,7 @@ syntax on
 filetype plugin indent on
 
 " On OS X, Preview using
-" https://chrome.google.com/webstore/detail/markdown-reader/gpoigdifkoadgajcincpilkjmejcaanc
+" https://chrome.google.com/webstore/detail/markdown-preview-plus/febilkbfcbhebfnokafefeacimjdckgl
 nmap <leader>p :w \| :silent !open -a /Applications/Google\ Chrome.app "%"<CR>
 
 set hlsearch
