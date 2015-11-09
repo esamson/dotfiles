@@ -9,7 +9,7 @@ filetype plugin indent on
 
 " On OS X, Preview using
 " https://chrome.google.com/webstore/detail/markdown-reader/gpoigdifkoadgajcincpilkjmejcaanc
-nmap <leader>p :silent !open -a /Applications/Google\ Chrome.app "%"<CR>
+nmap <leader>p :w \| :silent !open -a /Applications/Google\ Chrome.app "%"<CR>
 
 set hlsearch
 
