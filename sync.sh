@@ -11,7 +11,7 @@ function syncDown() {
 
     crontab -l > crontab
 
-    TMPFILE=`mktemp -t syncup` || exit 1
+    TMPFILE=`mktemp -t syncup.XXX` || exit 1
     if [ $? -ne 0 ]; then
         echo "$0: Can't create temp file, exiting..."
         exit 2
