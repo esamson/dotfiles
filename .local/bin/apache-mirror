@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#
+# Get the URL for the closest Apache mirror.
+# A path may be provided as an argument to get the mirror URL for that path.
+
+path=$1
+closer_cgi="http://www.apache.org/dyn/closer.cgi"
+
+url=$(curl -s $closer_cgi$path"?as_json=1" | grep preferred | cut -f 4 -d \" -)$path
+
+echo $url
