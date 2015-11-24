@@ -25,10 +25,22 @@ if [ $# -gt 0 ]; then
     elif [ ${#notes[@]} -eq 1 ]; then
         FILE=${notes[0]}
     else
-        find $DIR -iname "*$TITLE*" | sed "s|$DIR/||"
+        for i in "${!notes[@]}"; do
+            echo "[$i]: ${notes[$i]}"
+        done
+
         echo
-        echo "Too many matches, be more specific."
-        exit 1
+        echo -n "Which note? [0 - $i]: "
+        read pick
+
+        if [ $pick -eq $pick >/dev/null 2>&1 ] \
+        && [ $pick -ge 0 ] \
+        && [ $pick -le $i ]; then
+            FILE=${notes[$pick]}
+        else
+            echo "No such note: $pick"
+            exit 1
+        fi
     fi
 fi
 
