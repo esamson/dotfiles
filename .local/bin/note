@@ -22,8 +22,10 @@ if [ $# -gt 0 ]; then
 
     if [ ${#notes[@]} -eq 0 ]; then
         FILE=$DATE' '$TITLE'.md'
+        echo "Creating new note: $FILE"
     elif [ ${#notes[@]} -eq 1 ]; then
         FILE=${notes[0]}
+        echo "Opening note: $FILE"
     else
         for i in "${!notes[@]}"; do
             echo "[$i]: ${notes[$i]}"
@@ -37,6 +39,7 @@ if [ $# -gt 0 ]; then
         && [ $pick -ge 0 ] \
         && [ $pick -le $i ]; then
             FILE=${notes[$pick]}
+            echo "Opening note: $FILE"
         else
             echo "No such note: $pick"
             exit 1
