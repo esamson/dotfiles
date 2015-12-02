@@ -11,11 +11,13 @@ if [ -f /etc/bashrc ]; then
 fi
 
 # Load the shell dotfiles:
-# * ~/.extra can be used for other settings you don’t want to commit.
-for file in ~/.{aliases,extra}; do
-	[ -r "$file" ] && [ -f "$file" ] && source "$file";
-done;
-unset file;
+# For other settings you don’t want to commit, create scripts in ~/.bashrc.d/
+for script in ~/.bashrc.d/*.sh ; do
+    if [ -r $script ] ; then
+        . $script
+    fi
+done
+unset script
 
 # vi mode command prompt
 set -o vi
