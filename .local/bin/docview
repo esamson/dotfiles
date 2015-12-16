@@ -1,0 +1,127 @@
+#!/usr/bin/env bash
+#
+# Extract doc JAR from Ivy cache and view in browser.
+ 
+CACHE_DIR=~/.ivy2/cache
+EXTRACT_DIR=~/Downloads
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 library [class]"
+    exit 1
+fi
+
+asterize() {
+    local IFS="*"
+    echo "$*"
+}
+
+fuzzify() {
+    asterize $(echo "$*" | fold -w1)
+}
+
+find_jar() {
+    lib=$1
+    found="$TMPDIR"lib.found.$RANDOM
+
+    find $CACHE_DIR -ipath "*/docs/*$(fuzzify $lib)*" | sed "s|$CACHE_DIR/||" > $found
+    declare -a jars
+    count=0
+    while read jar; do
+        jars[$count]=$jar
+        count=$((count + 1))
+    done < $found
+    rm $found
+
+    jarcount=${#jars[@]}
+    if [ $jarcount -eq 0 ]; then
+        echo "No doc jar found for $lib"
+        exit 2
+    elif [ $jarcount -eq 1 ]; then
+        jar="${jars[0]}"
+    else
+        for i in "${!jars[@]}"; do
+            echo "[$i]: ${jars[$i]}"
+        done
+
+        echo
+        echo -n "Which JAR? [0 - $i]: "
+        read pick
+
+        if [ -z "$pick" ]; then
+            exit 3
+        fi
+
+        if [ $pick -eq $pick >/dev/null 2>&1 ] \
+        && [ $pick -ge 0 ] \
+        && [ $pick -le $i ]; then
+            jar=${jars[$pick]}
+        else
+            echo "No such jar: $pick"
+            exit 3
+        fi
+    fi
+}
+
+extract_jar() {
+    jar=$1
+    extract_dir="$EXTRACT_DIR/$jar"
+
+    if [ ! -d "$extract_dir" ]; then
+        mkdir -p "$extract_dir"
+        cd "$extract_dir"
+        jar xf "$CACHE_DIR/$jar"
+    fi
+}
+
+find_html() {
+    name=$1
+    found="$TMPDIR"html.found.$RANDOM
+
+    find $extract_dir -ipath "*$(fuzzify $name)*.html" | sed "s|$extract_dir/||" > $found
+    declare -a htmls
+    count=0
+    while read result; do
+        htmls[$count]=$result
+        count=$((count + 1))
+    done < $found
+    rm $found
+
+    htmlcount=${#htmls[@]}
+    if [ $htmlcount -eq 0 ]; then
+        echo "No doc file found for '$name'"
+        html="index.html"
+    elif [ $htmlcount -eq 1 ]; then
+        html="${htmls[0]}"
+    else
+        for i in "${!htmls[@]}"; do
+            echo "[$i]: ${htmls[$i]}"
+        done
+
+        echo
+        echo -n "Which doc? [0 - $i]: "
+        read pick
+
+        if [ -z "$pick" ]; then
+            exit 4
+        fi
+
+        if [ $pick -eq $pick >/dev/null 2>&1 ] \
+        && [ $pick -ge 0 ] \
+        && [ $pick -le $i ]; then
+            html=${htmls[$pick]}
+        else
+            echo "No such doc: $pick"
+            html="index.html"
+        fi
+    fi
+}
+
+find_jar $1
+extract_jar $jar
+
+if [ -z "$2" ]; then
+    html="index.html"
+else
+    find_html $2
+fi
+open "$extract_dir/$html"
