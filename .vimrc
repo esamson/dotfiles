@@ -38,3 +38,9 @@ let g:vim_markdown_folding_disabled=1
 
 " Toggle NERDTree
 map <leader>n :NERDTreeToggle<CR>
+
+" Format JSON
+autocmd Filetype json command Format :%!python -m json.tool
+
+autocmd VimEnter * if exists(":Format") | exe "map <leader>f :Format\<CR>" | endif
+
