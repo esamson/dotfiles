@@ -5,7 +5,7 @@
  -->
 <nexusConfiguration>
   <version>2.8.0</version>
-  <nexusVersion>2.11.4-01</nexusVersion>
+  <nexusVersion>2.12.0-01</nexusVersion>
   <globalConnectionSettings>
     <connectionTimeout>20000</connectionTimeout>
     <retrievalRetryCount>3</retrievalRetryCount>
@@ -48,9 +48,12 @@
         <artifactMaxAge>-1</artifactMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <cleanseRepositoryMetadata>false</cleanseRepositoryMetadata>
-        <downloadRemoteIndex>false</downloadRemoteIndex>
+        <downloadRemoteIndex>true</downloadRemoteIndex>
         <checksumPolicy>WARN</checksumPolicy>
         <repositoryPolicy>RELEASE</repositoryPolicy>
+        <autoBlockActive>true</autoBlockActive>
+        <fileTypeValidation>true</fileTypeValidation>
+        <metadataMaxAge>1440</metadataMaxAge>
       </externalConfiguration>
     </repository>
     <repository>
@@ -246,7 +249,7 @@
         <repositoryPolicy>RELEASE</repositoryPolicy>
         <checksumPolicy>WARN</checksumPolicy>
         <fileTypeValidation>true</fileTypeValidation>
-        <downloadRemoteIndex>false</downloadRemoteIndex>
+        <downloadRemoteIndex>true</downloadRemoteIndex>
         <artifactMaxAge>-1</artifactMaxAge>
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
@@ -277,7 +280,7 @@
         <repositoryPolicy>RELEASE</repositoryPolicy>
         <checksumPolicy>WARN</checksumPolicy>
         <fileTypeValidation>true</fileTypeValidation>
-        <downloadRemoteIndex>false</downloadRemoteIndex>
+        <downloadRemoteIndex>true</downloadRemoteIndex>
         <artifactMaxAge>-1</artifactMaxAge>
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
@@ -330,7 +333,7 @@
         <repositoryPolicy>RELEASE</repositoryPolicy>
         <checksumPolicy>WARN</checksumPolicy>
         <fileTypeValidation>true</fileTypeValidation>
-        <downloadRemoteIndex>false</downloadRemoteIndex>
+        <downloadRemoteIndex>true</downloadRemoteIndex>
         <artifactMaxAge>-1</artifactMaxAge>
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
@@ -361,7 +364,7 @@
         <repositoryPolicy>RELEASE</repositoryPolicy>
         <checksumPolicy>WARN</checksumPolicy>
         <fileTypeValidation>true</fileTypeValidation>
-        <downloadRemoteIndex>false</downloadRemoteIndex>
+        <downloadRemoteIndex>true</downloadRemoteIndex>
         <artifactMaxAge>-1</artifactMaxAge>
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
@@ -392,11 +395,12 @@
         <repositoryPolicy>RELEASE</repositoryPolicy>
         <checksumPolicy>WARN</checksumPolicy>
         <fileTypeValidation>true</fileTypeValidation>
-        <downloadRemoteIndex>false</downloadRemoteIndex>
+        <downloadRemoteIndex>true</downloadRemoteIndex>
         <artifactMaxAge>-1</artifactMaxAge>
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
+        <proxyMode>ALLOW</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -423,7 +427,7 @@
         <repositoryPolicy>RELEASE</repositoryPolicy>
         <checksumPolicy>WARN</checksumPolicy>
         <fileTypeValidation>true</fileTypeValidation>
-        <downloadRemoteIndex>false</downloadRemoteIndex>
+        <downloadRemoteIndex>true</downloadRemoteIndex>
         <artifactMaxAge>-1</artifactMaxAge>
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
@@ -454,7 +458,7 @@
         <repositoryPolicy>RELEASE</repositoryPolicy>
         <checksumPolicy>WARN</checksumPolicy>
         <fileTypeValidation>true</fileTypeValidation>
-        <downloadRemoteIndex>false</downloadRemoteIndex>
+        <downloadRemoteIndex>true</downloadRemoteIndex>
         <artifactMaxAge>-1</artifactMaxAge>
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
@@ -612,11 +616,95 @@
       </patterns>
     </repositoryTarget>
   </repositoryTargets>
+  <tasks>
+    <task>
+      <id>1</id>
+      <name>Update All Indexes</name>
+      <enabled>true</enabled>
+      <type>UpdateIndexTask</type>
+      <status>SUBMITTED</status>
+      <nextRun>1452513600000</nextRun>
+      <schedule>
+        <type>daily</type>
+        <startDate>1449748800000</startDate>
+      </schedule>
+      <properties>
+        <property>
+          <key>resourceStorePath</key>
+          <value></value>
+        </property>
+        <property>
+          <key>.name</key>
+          <value>Update All Indexes</value>
+        </property>
+        <property>
+          <key>repositoryId</key>
+          <value>all_repo</value>
+        </property>
+        <property>
+          <key>.id</key>
+          <value>1</value>
+        </property>
+      </properties>
+    </task>
+    <task>
+      <id>3</id>
+      <name>Optimize Indexes</name>
+      <enabled>true</enabled>
+      <type>OptimizeIndexTask</type>
+      <status>SUBMITTED</status>
+      <nextRun>1452542400000</nextRun>
+      <schedule>
+        <type>daily</type>
+        <startDate>1450468800000</startDate>
+      </schedule>
+      <properties>
+        <property>
+          <key>.name</key>
+          <value>Optimize Indexes</value>
+        </property>
+        <property>
+          <key>repositoryId</key>
+          <value>all_repo</value>
+        </property>
+        <property>
+          <key>.id</key>
+          <value>3</value>
+        </property>
+      </properties>
+    </task>
+    <task>
+      <id>2</id>
+      <name>Publish All Indexes</name>
+      <enabled>true</enabled>
+      <type>PublishIndexesTask</type>
+      <status>SUBMITTED</status>
+      <nextRun>1452549600000</nextRun>
+      <schedule>
+        <type>daily</type>
+        <startDate>1449698400000</startDate>
+      </schedule>
+      <properties>
+        <property>
+          <key>.name</key>
+          <value>Publish All Indexes</value>
+        </property>
+        <property>
+          <key>repositoryId</key>
+          <value>all_repo</value>
+        </property>
+        <property>
+          <key>.id</key>
+          <value>2</value>
+        </property>
+      </properties>
+    </task>
+  </tasks>
   <smtpConfiguration>
     <hostname>smtp-host</hostname>
     <port>25</port>
     <username>smtp-username</username>
-    <password>{IqJy1SrHx1sHR36u8G/v8frU/Hg1d0z17I30ds/PKXQ=}</password>
+    <password>{Y1VHoFMnGQgHRVwIHn2wOXTXq2oVrgJRL1pRhFokrLI=}</password>
     <systemEmailAddress>system@nexus.org</systemEmailAddress>
   </smtpConfiguration>
   <notification />
