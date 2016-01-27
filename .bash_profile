@@ -32,6 +32,11 @@ for script in ~/.bash_profile.d/*.sh ; do
         . $script
     fi
 done
+for script in ~/.bash_profile.d/$(uname)/*.sh ; do
+    if [ -r $script ] ; then
+        . $script
+    fi
+done
 unset script
 
 export PATH

@@ -30,10 +30,3 @@ HISTCONTROL=ignoreboth
 
 # Append to the Bash history file, rather than overwriting it
 shopt -s histappend;
-
-# Homebrew bash completion
-#source $(brew --repository)/Library/Contributions/brew_bash_completion.sh
-if [ -f $(brew --prefix)/share/bash-completion/bash_completion ]; then
-    . $(brew --prefix)/share/bash-completion/bash_completion
-fi
-
