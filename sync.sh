@@ -62,6 +62,8 @@ function syncUp() {
         --human-readable \
         --no-perms \
         --archive . ~
+
+    chmod go-rwx $HOME
     source ~/.bash_profile
 }
 
