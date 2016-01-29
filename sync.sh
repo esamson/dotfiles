@@ -24,6 +24,8 @@ function syncDown() {
         -not -path './LICENSE' \
         -not -path './README.md' \
         -not -path './crontab' \
+        -not -path './install.sh' \
+        -not -path './installers/*' \
         -not -path './sync.sh' \
         | sed "s|^\./||" > $TMPFILE
 
@@ -53,6 +55,8 @@ function syncUp() {
         --exclude "/LICENSE" \
         --exclude "/README.md" \
         --exclude "/crontab" \
+        --exclude "/install.sh" \
+        --exclude "/installers/" \
         --exclude "/sync.sh" \
         --verbose \
         --human-readable \
