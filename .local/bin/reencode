@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+#
+# Reencode videos for direct play on Chromecast.
+
+__help() {
+    echo "Usage: $0 <videofile1> [ videofile2 ... ]"
+}
+
+__success() {
+    echo "SUCCESS: $1"
+}
+
+__fail() {
+    echo "FAIL: $1"
+}
+
+__reencode() {
+    local orig=$1
+    local base=$(basename "$orig")
+    local out=$OUT_DIR/${base%.*}.mkv
+    echo "Reencoding $orig to $out"
+
+    
+    ffmpeg -i "$orig" -c:v libx264 \
+            -preset veryslow \
+            -profile:v high \
+            -level 4.1 \
+            -crf 18 \
+            -maxrate 1M \
+            -bufsize 24M \
+            -pix_fmt yuv420p \
+            -force_key_frames "expr:gte(t,n_forced*5)" \
+            -vf "scale=trunc(min(max(iw\,ih*dar)\,1280)/2)*2:trunc(ow/dar/2)*2" \
+            -x264opts bframes=3:cabac=1 \
+            -movflags +faststart \
+        -c:a aac -strict -2 \
+            -b:a 128k \
+            -ac 2 \
+        -y "$out" \
+    && __success $orig \
+    || __fail $orig
+}
+
+if [ $# -lt 1 ]; then
+    __help
+    exit 1
+fi
+ 
+OUT_DIR="$HOME/Videos/reencoded"
+mkdir -p "$OUT_DIR"
+
+for FILE in "$@"; do
+    if [ -f "$FILE" ]; then
+        __reencode "$FILE"
+    elif [ -d "$FILE" ]; then
+        find "$FILE" -type f -print0 | while read -d $'\0' CHILD; do
+            __reencode "$CHILD"
+        done
+    else
+        echo "Skipping invalid file ($FILE)."
+    fi
+done
