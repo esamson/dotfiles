@@ -36,7 +36,7 @@ __reencode() {
         -c:a aac -strict -2 \
             -b:a 128k \
             -ac 2 \
-        -y "$out" \
+        -y "$out" </dev/null \
     && __success $orig \
     || __fail $orig
 }
