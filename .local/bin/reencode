@@ -18,8 +18,9 @@ __reencode() {
     local orig=$1
     local base=$(basename "$orig")
     local out=$OUT_DIR/${base%.*}.mkv
+    local log=$LOG_DIR/${base%.*}.log
+    local err=$LOG_DIR/${base%.*}.err
     echo "Reencoding $orig to $out"
-
     
     ffmpeg -i "$orig" -c:v libx264 \
             -preset veryslow \
@@ -37,6 +38,8 @@ __reencode() {
             -b:a 128k \
             -ac 2 \
         -y "$out" </dev/null \
+        > "$log" \
+        2> "$err" \
     && __success $orig \
     || __fail $orig
 }
@@ -48,6 +51,9 @@ fi
  
 OUT_DIR="$HOME/Videos/reencoded"
 mkdir -p "$OUT_DIR"
+
+LOG_DIR="$HOME/Videos/reencoded/logs"
+mkdir -p "$LOG_DIR"
 
 for FILE in "$@"; do
     if [ -f "$FILE" ]; then
