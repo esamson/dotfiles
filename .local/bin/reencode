@@ -22,7 +22,7 @@ __reencode() {
     local err=$LOG_DIR/${base%.*}.err
     echo "Reencoding $orig to $out"
     
-    local audioOpts="aac -strict -2 -b:a 160k -ac 2"
+    local audioOpts="aac -strict -2 -b:a 128k -ac 2"
 
     if ffprobe -show_streams -print_format flat "$orig" 2>/dev/null | grep 'codec_name="aac"' \
         || ffprobe -show_streams -print_format flat "$orig" 2>/dev/null | grep 'codec_name="mp3"'; then
@@ -35,8 +35,8 @@ __reencode() {
             -profile:v high \
             -level 4.1 \
             -crf 18 \
-            -maxrate 1M \
-            -bufsize 8M \
+            -maxrate 700k \
+            -bufsize 700k \
             -pix_fmt yuv420p \
             -force_key_frames "expr:gte(t,n_forced*5)" \
             -vf "scale=trunc(min(max(iw\,ih*dar)\,1280)/2)*2:trunc(ow/dar/2)*2" \
