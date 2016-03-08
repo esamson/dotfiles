@@ -18,8 +18,8 @@ __reencode() {
     local orig=$1
     local base=$(basename "$orig")
     local out=$OUT_DIR/${base%.*}.mkv
-    local log=$LOG_DIR/${base%.*}.log
-    local err=$LOG_DIR/${base%.*}.err
+    local log=$LOG_DIR/${base}.log
+    local err=$LOG_DIR/${base}.err
     echo "Reencoding $orig to $out"
     
     local audioOpts="aac -strict -2 -b:a 128k -ac 2"
@@ -43,6 +43,7 @@ __reencode() {
             -x264opts bframes=3:cabac=1 \
             -movflags +faststart \
         -c:a $audioOpts \
+        -xerror \
         -y "$out" </dev/null \
         > "$log" \
         2> "$err" \
