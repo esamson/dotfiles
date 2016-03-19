@@ -17,7 +17,7 @@ __fail() {
 __reencode() {
     local orig=$1
     local base=$(basename "$orig")
-    local out=$OUT_DIR/${base}.mkv
+    local out=$OUT_DIR/${base%.*}.mkv
     local log=$LOG_DIR/${base}.log
     local err=$LOG_DIR/${base}.err
     local streams=$LOG_DIR/${base}.streams
