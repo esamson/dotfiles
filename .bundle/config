@@ -1,2 +1,5 @@
 ---
-BUNDLE_MIRROR__HTTPS://RUBYGEMS.ORG: http://localhost:8081/nexus/content/groups/gems
+BUNDLE_MIRROR__HTTPS://RUBYGEMS__ORG/: http://localhost:8081/nexus/content/groups/gems
+BUNDLE_BUILD__EVENTMACHINE: "--with-cppflags=-I/usr/local/opt/openssl/include"
+BUNDLE_BUILD__THRIFT: "--with-cppflags='-D_FORTIFY_SOURCE=0 -Wno-shift-negative-value'"
+BUNDLE_BUILD__NOKOGIRI: "--use-system-libraries=true --with-xml2-include=/usr/local/opt/libxml2/include/libxml2"
