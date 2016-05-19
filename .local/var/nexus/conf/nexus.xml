@@ -188,9 +188,9 @@
           <memberRepository>central</memberRepository>
           <memberRepository>typesafe-releases</memberRepository>
           <memberRepository>twttr</memberRepository>
-          <memberRepository>cloudera</memberRepository>
           <memberRepository>spark-jobserver</memberRepository>
           <memberRepository>clojars</memberRepository>
+          <memberRepository>cloudera</memberRepository>
         </memberRepositories>
       </externalConfiguration>
     </repository>
@@ -566,11 +566,11 @@
   <repositoryGrouping>
     <pathMappings>
       <pathMapping>
-        <id>33388f2ec50</id>
+        <id>144f465eda7ffe80</id>
         <groupId>public</groupId>
         <routeType>exclusive</routeType>
         <routePatterns>
-          <routePattern>(?!/com/cloudera/.*).*</routePattern>
+          <routePattern>(?!((/com/cloudera/.*)|(.*cdh5.*))).*</routePattern>
         </routePatterns>
         <repositories>
           <repository>cloudera</repository>
