@@ -19,3 +19,12 @@ alias grep='grep --color=auto'
 if [ "$(uname)" == "Darwin" ]; then
     alias gvim=mvim
 fi
+
+# Create a new alias from the last command
+# https://medium.com/the-lazy-developer/an-alias-for-new-aliases-c6500ae0f73e
+new-alias() {
+    local new_aliases=~/.bashrc.d/new-aliases.sh
+    local last_command=$(echo `history |tail -n2 |head -n1` | sed 's/[0-9]* //')
+    echo alias $1="'""$last_command""'" >> $new_aliases
+    . $new_aliases
+}
