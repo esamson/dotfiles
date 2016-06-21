@@ -39,8 +39,8 @@ __reencode() {
             -profile:v high \
             -level 4.1 \
             -crf 18 \
-            -maxrate 700k \
-            -bufsize 700k \
+            -maxrate 2000k \
+            -bufsize 2000k \
             -pix_fmt yuv420p \
             -force_key_frames "expr:gte(t,n_forced*5)" \
             -vf "scale=trunc(min(max(iw\,ih*dar)\,1280)/2)*2:trunc(ow/dar/2)*2" \
