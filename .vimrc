@@ -39,6 +39,16 @@ let g:vim_markdown_folding_disabled=1
 " Toggle NERDTree
 map <leader>n :NERDTreeToggle<CR>
 
+" Ignores
+" set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+" let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git)$',
+  \ 'file': '\v\.(class)$',
+  \ }
+
+" Ignore files in .gitignore
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+
 " Format JSON
 autocmd Filetype json command Format :%!python -m json.tool
 
