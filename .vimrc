@@ -50,7 +50,7 @@ map <leader>n :NERDTreeToggle<CR>
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 " Format JSON
-autocmd Filetype json command Format :%!python -m json.tool
+autocmd Filetype json command Format :%!prettyPrintJson
 
 autocmd VimEnter * if exists(":Format") | exe "map <leader>f :Format\<CR>" | endif
 
