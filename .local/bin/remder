@@ -1,0 +1,104 @@
+#!/usr/bin/env amm -s
+
+/**
+ * Render markdown files.
+ *
+ * requires http://www.lihaoyi.com/Ammonite/
+ */
+
+import $ivy.`com.atlassian.commonmark:commonmark:0.7.0`,
+  org.commonmark.node._,
+  org.commonmark.parser.Parser,
+  org.commonmark.renderer.NodeRenderer,
+  org.commonmark.renderer.html._
+import $ivy.`com.google.guava:guava:19.0`,
+  com.google.common.hash._,
+  com.google.common.io._
+import $ivy.`com.lihaoyi::scalatags:0.6.0`,
+  scalatags.Text.all._
+import $ivy.`net.sourceforge.plantuml:plantuml:8047`,
+  net.sourceforge.plantuml.{FileFormat, FileFormatOption, SourceStringReader}
+import java.io._
+import java.nio.charset.StandardCharsets.UTF_8
+import java.util
+import ammonite.ops._
+
+val md5 = Hashing.md5()
+val base64 = BaseEncoding.base64()
+val outdir = home/'Downloads
+val css = home/".local"/'etc/"remder.css"
+
+@main
+def main(file: File): Unit = {
+  val source = read! Path(file.getAbsoluteFile)
+  val sourceMd5 = md5.hashUnencodedChars(source)
+
+  val title = file.getName.stripSuffix(".md")
+  val target = outdir/s"$sourceMd5.html"
+
+  if (!target.toIO.exists) {
+    write(target, render(title, source))
+  }
+
+  %%('open, target.last)(outdir)
+}
+
+def render(title: String, source: String) = {
+  val parser = Parser.builder().build()
+  val document = parser.parse(source)
+  val renderer = HtmlRenderer.builder().
+    nodeRendererFactory(new HtmlNodeRendererFactory {
+      override def create(context: HtmlNodeRendererContext): NodeRenderer = {
+        val writer = context.getWriter
+        val default = new CoreHtmlNodeRenderer(context)
+
+        new NodeRenderer {
+          override def getNodeTypes: util.Set[Class[_ <: Node]] = {
+            util.Collections.singleton(classOf[FencedCodeBlock])
+          }
+
+          override def render(node: Node): Unit = {
+            node match {
+              case fcb: FencedCodeBlock if "uml" == fcb.getInfo =>
+                val uml = fcb.getLiteral
+                val umlMd5 = md5.hashUnencodedChars(uml)
+                val reader = new SourceStringReader(s"@startuml\n$uml\n@enduml")
+                val targetPath = outdir/s"$umlMd5.png"
+                val targetFile = targetPath.toIO
+
+                if (!targetFile.exists) {
+                  reader.generateImage(targetFile)
+                }
+
+                val data = base64.encode(targetPath.getBytes)
+                val dataUri = s"data:image/png;base64,$data"
+                val attrs = new util.HashMap[String, String]()
+                attrs.put("src", dataUri)
+
+                writer.line()
+                writer.tag("img", attrs, true)
+                writer.line()
+              case _ => default.render(node)
+            }
+          }
+        }
+      }
+    }).
+    build()
+  val output = renderer.render(document)
+
+  html(
+    head(
+      tag("title")(
+        title
+      ),
+      tag("style")(
+        raw(read! css)
+      )
+    ),
+    body(
+      h1(title),
+      raw(output)
+    )
+  ).render
+}

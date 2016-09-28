@@ -7,12 +7,6 @@ execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
-" On OS X, Preview using
-" https://chrome.google.com/webstore/detail/markdown-preview-plus/febilkbfcbhebfnokafefeacimjdckgl
-" See dotfiles/.vim/resources/GithubWhite.css for custom theme with no default
-" background color -- better for copy-pasting into email.
-nmap <leader>p :w \| :silent !open -a /Applications/Google\ Chrome.app "%"<CR>
-
 set hlsearch
 
 set tabstop=4
@@ -54,3 +48,5 @@ autocmd Filetype json command Format :%!prettyPrintJson
 
 autocmd VimEnter * if exists(":Format") | exe "map <leader>f :Format\<CR>" | endif
 
+" Preview Markdown
+autocmd Filetype markdown nmap <leader>p :w \| :silent !remder '%'<CR>
