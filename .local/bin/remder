@@ -11,37 +11,38 @@
  * requires http://www.lihaoyi.com/Ammonite/
  */
 
-import $ivy.`com.atlassian.commonmark:commonmark:0.7.0`,
-  org.commonmark.node._,
-  org.commonmark.parser.Parser,
-  org.commonmark.renderer.NodeRenderer,
-  org.commonmark.renderer.html._
-import $ivy.`com.google.guava:guava:19.0`,
-  com.google.common.hash._,
-  com.google.common.io._
-import $ivy.`com.lihaoyi::scalatags:0.6.0`,
-  scalatags.Text.all._
-import $ivy.`net.sourceforge.plantuml:plantuml:8047`,
-  net.sourceforge.plantuml.SourceStringReader
+import $ivy.`com.atlassian.commonmark:commonmark:0.7.0`
+import $ivy.`com.lihaoyi::scalatags:0.6.0`
+import $ivy.`net.sourceforge.plantuml:plantuml:8047`
+
 import java.io._
 import java.util
-import ammonite.ops._
+import javax.xml.bind.DatatypeConverter
 
-val md5 = Hashing.md5()
-val base64 = BaseEncoding.base64()
+import ammonite.ops._
+import net.sourceforge.plantuml.SourceStringReader
+import org.commonmark.node._
+import org.commonmark.parser.Parser
+import org.commonmark.renderer.NodeRenderer
+import org.commonmark.renderer.html._
+
+import scala.concurrent._
+import scala.concurrent.duration.Duration
+import scalatags.Text.all._
+
 val outdir = sys.env.get("REMDER_OUTDIR").
-    map(f => Path(new File(f).getAbsoluteFile)).
-    getOrElse(root / 'tmp)
+  map(f => Path(new File(f).getAbsoluteFile)).
+  getOrElse(root / 'tmp)
 val css = sys.env.get("REMDER_CSS").
-    map(f => Path(new File(f).getAbsoluteFile))
+  map(f => Path(new File(f).getAbsoluteFile))
 
 @main
 def main(file: File): Unit = {
   val source = read ! Path(file.getAbsoluteFile)
-  val sourceMd5 = md5.hashUnencodedChars(source)
+  val hash = source.hashCode
 
   val title = file.getName.stripSuffix(".md")
-  val target = outdir / s"$sourceMd5.html"
+  val target = outdir / s"remder-$hash.html"
 
   if (!target.toIO.exists) {
     write(target, render(title, source))
@@ -54,44 +55,8 @@ def render(title: String, source: String) = {
   val parser = Parser.builder().build()
   val document = parser.parse(source)
   val renderer = HtmlRenderer.builder().
-      nodeRendererFactory(new HtmlNodeRendererFactory {
-        override def create(context: HtmlNodeRendererContext): NodeRenderer = {
-          val writer = context.getWriter
-          val default = new CoreHtmlNodeRenderer(context)
-
-          new NodeRenderer {
-            override def getNodeTypes: util.Set[Class[_ <: Node]] = {
-              util.Collections.singleton(classOf[FencedCodeBlock])
-            }
-
-            override def render(node: Node): Unit = {
-              node match {
-                case fcb: FencedCodeBlock if "uml" == fcb.getInfo =>
-                  val uml = fcb.getLiteral
-                  val umlMd5 = md5.hashUnencodedChars(uml)
-                  val reader = new SourceStringReader(s"@startuml\n$uml\n@enduml")
-                  val targetPath = outdir / s"$umlMd5.png"
-                  val targetFile = targetPath.toIO
-
-                  if (!targetFile.exists) {
-                    reader.generateImage(targetFile)
-                  }
-
-                  val data = base64.encode(targetPath.getBytes)
-                  val dataUri = s"data:image/png;base64,$data"
-                  val attrs = new util.HashMap[String, String]()
-                  attrs.put("src", dataUri)
-
-                  writer.line()
-                  writer.tag("img", attrs, true)
-                  writer.line()
-                case _ => default.render(node)
-              }
-            }
-          }
-        }
-      }).
-      build()
+    nodeRendererFactory(new FencedCodeBlockRenderer(document)).
+    build()
   val output = renderer.render(document)
 
   html(
@@ -108,6 +73,70 @@ def render(title: String, source: String) = {
       raw(output)
     )
   ).render
+}
+
+class FencedCodeBlockRenderer(document: Node) extends HtmlNodeRendererFactory {
+
+  val renderedUml = renderUmlNodes(document)
+
+  def renderUmlNodes(document: Node) = {
+    val builder = Map.newBuilder[String, Future[String]]
+
+    document.accept(new AbstractVisitor {
+      override def visit(fcb: FencedCodeBlock): Unit = {
+        import ExecutionContext.Implicits.global
+
+        if (fcb.getInfo == "uml") {
+          val source = fcb.getLiteral
+          val hash = source.hashCode.toString
+          fcb.setLiteral(hash)
+
+          builder += hash -> Future {
+            val targetPath = outdir / s"$hash.png"
+            val targetFile = targetPath.toIO
+
+            blocking {
+              if (!targetFile.exists) {
+                new SourceStringReader(s"@startuml\n$source\n@enduml").
+                  generateImage(targetFile)
+              }
+
+              DatatypeConverter.printBase64Binary(targetPath.getBytes)
+            }
+          }
+        }
+      }
+    })
+
+    builder.result()
+  }
+
+  override def create(context: HtmlNodeRendererContext): NodeRenderer = {
+    val writer = context.getWriter
+    val default = new CoreHtmlNodeRenderer(context)
+
+    new NodeRenderer {
+      override def getNodeTypes = {
+        util.Collections.singleton(classOf[FencedCodeBlock])
+      }
+
+      override def render(node: Node): Unit = {
+        node match {
+          case fcb: FencedCodeBlock if "uml" == fcb.getInfo =>
+            val hash = fcb.getLiteral
+            val rendered = Await.result(renderedUml(hash), Duration.Inf)
+            val dataUri = s"data:image/png;base64,$rendered"
+            val attrs = new util.HashMap[String, String]()
+            attrs.put("src", dataUri)
+
+            writer.line()
+            writer.tag("img", attrs, true)
+            writer.line()
+          case _ => default.render(node)
+        }
+      }
+    }
+  }
 }
 
 val DefaultCss = """
