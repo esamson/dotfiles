@@ -13,7 +13,7 @@
 
 import $ivy.`com.atlassian.commonmark:commonmark:0.7.0`
 import $ivy.`com.lihaoyi::scalatags:0.6.0`
-import $ivy.`net.sourceforge.plantuml:plantuml:8047`
+import $ivy.`net.sourceforge.plantuml:plantuml:8048`
 
 import java.io._
 import java.util
