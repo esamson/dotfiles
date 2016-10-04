@@ -95,14 +95,20 @@ class FencedCodeBlockRenderer(document: Node) extends HtmlNodeRendererFactory {
             val targetPath = outdir / s"$hash.png"
             val targetFile = targetPath.toIO
 
-            blocking {
-              if (!targetFile.exists) {
-                new SourceStringReader(s"@startuml\n$source\n@enduml").
-                  generateImage(targetFile)
+            val bytes = if (!targetFile.exists) {
+              val os = new ByteArrayOutputStream()
+              new SourceStringReader(s"@startuml\n$source\n@enduml").
+                generateImage(os)
+              val rendered = os.toByteArray
+              Future {
+                write(targetPath, rendered)
               }
-
-              DatatypeConverter.printBase64Binary(targetPath.getBytes)
+              rendered
+            } else {
+              targetPath.getBytes
             }
+
+            DatatypeConverter.printBase64Binary(bytes)
           }
         }
       }
