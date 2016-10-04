@@ -77,16 +77,15 @@ def render(title: String, source: String) = {
 
 class FencedCodeBlockRenderer(document: Node) extends HtmlNodeRendererFactory {
 
-  val renderedUml = renderUmlNodes(document)
-
-  def renderUmlNodes(document: Node) = {
+  val renderedNodes = {
     val builder = Map.newBuilder[String, Future[String]]
 
     document.accept(new AbstractVisitor {
       override def visit(fcb: FencedCodeBlock): Unit = {
         import ExecutionContext.Implicits.global
 
-        if (fcb.getInfo == "uml") {
+        val nodeType = fcb.getInfo
+        if (NodeTypes contains nodeType) {
           val source = fcb.getLiteral
           val hash = source.hashCode.toString
           fcb.setLiteral(hash)
@@ -97,7 +96,7 @@ class FencedCodeBlockRenderer(document: Node) extends HtmlNodeRendererFactory {
 
             val bytes = if (!targetFile.exists) {
               val os = new ByteArrayOutputStream()
-              new SourceStringReader(s"@startuml\n$source\n@enduml").
+              new SourceStringReader(s"@start$nodeType\n$source\n@end$nodeType").
                 generateImage(os)
               val rendered = os.toByteArray
               Future {
@@ -128,9 +127,9 @@ class FencedCodeBlockRenderer(document: Node) extends HtmlNodeRendererFactory {
 
       override def render(node: Node): Unit = {
         node match {
-          case fcb: FencedCodeBlock if "uml" == fcb.getInfo =>
+          case fcb: FencedCodeBlock if NodeTypes contains fcb.getInfo =>
             val hash = fcb.getLiteral
-            val rendered = Await.result(renderedUml(hash), Duration.Inf)
+            val rendered = Await.result(renderedNodes(hash), Duration.Inf)
             val dataUri = s"data:image/png;base64,$rendered"
             val attrs = new util.HashMap[String, String]()
             attrs.put("src", dataUri)
@@ -144,6 +143,8 @@ class FencedCodeBlockRenderer(document: Node) extends HtmlNodeRendererFactory {
     }
   }
 }
+
+val NodeTypes = Set("uml", "salt", "ditaa", "dot", "jcckit")
 
 val DefaultCss = """
 *{margin:0;padding:0;}
