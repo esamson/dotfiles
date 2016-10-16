@@ -11,7 +11,8 @@
  * requires http://www.lihaoyi.com/Ammonite/
  */
 
-import $ivy.`com.atlassian.commonmark:commonmark:0.7.0`
+import $ivy.`com.atlassian.commonmark:commonmark:0.7.1`
+import $ivy.`com.atlassian.commonmark:commonmark-ext-gfm-tables:0.7.1`
 import $ivy.`com.lihaoyi::scalatags:0.6.0`
 import $ivy.`net.sourceforge.plantuml:plantuml:8048`
 
@@ -21,11 +22,13 @@ import javax.xml.bind.DatatypeConverter
 
 import ammonite.ops._
 import net.sourceforge.plantuml.SourceStringReader
+import org.commonmark.ext.gfm.tables.TablesExtension
 import org.commonmark.node._
 import org.commonmark.parser.Parser
 import org.commonmark.renderer.NodeRenderer
 import org.commonmark.renderer.html._
 
+import scala.collection.JavaConverters._
 import scala.concurrent._
 import scala.concurrent.duration.Duration
 import scalatags.Text.all._
@@ -52,10 +55,14 @@ def main(file: File): Unit = {
 }
 
 def render(title: String, source: String) = {
-  val parser = Parser.builder().build()
+  val extensions = List(TablesExtension.create()).asJava
+  val parser = Parser.builder().
+    extensions(extensions).
+    build()
   val document = parser.parse(source)
   val renderer = HtmlRenderer.builder().
     nodeRendererFactory(new FencedCodeBlockRenderer(document)).
+    extensions(extensions).
     build()
   val output = renderer.render(document)
 
