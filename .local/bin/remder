@@ -1,4 +1,4 @@
-#!/usr/bin/env amm -s
+#!/usr/bin/env amm
 
 /**
  * Render markdown files.
@@ -16,6 +16,7 @@ import $ivy.`com.atlassian.commonmark:commonmark-ext-gfm-tables:0.7.1`
 import $ivy.`com.lihaoyi::scalatags:0.6.0`
 import $ivy.`net.sourceforge.plantuml:plantuml:8048`
 
+import java.awt.Desktop
 import java.io._
 import java.util
 import javax.xml.bind.DatatypeConverter
@@ -51,7 +52,7 @@ def main(file: File): Unit = {
     write(target, render(title, source))
   }
 
-  %%('open, target.last)(outdir)
+  Desktop.getDesktop().browse(target.toIO.toURI)
 }
 
 def render(title: String, source: String) = {
