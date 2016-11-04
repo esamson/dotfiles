@@ -266,6 +266,12 @@ code {
     font-family: Consolas, "Liberation Mono", Menlo, "Courier New", monospace;
 }
 
+code::before,
+code::after {
+    letter-spacing: -0.2em;
+    content: "\00a0";
+}
+
 pre {
     padding: 14px;
     overflow: auto;
@@ -294,9 +300,9 @@ pre code {
     border: 0;
 }
 
-code::before, code::after {
-    letter-spacing: -0.2em;
-    content: "\00a0";
+pre code::before,
+pre code::after {
+    content: normal;
 }
 
 img {
