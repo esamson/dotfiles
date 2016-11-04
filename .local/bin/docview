@@ -115,4 +115,11 @@ if [ -z "$2" ]; then
 else
     find_html $2
 fi
-open "$extract_dir/$html"
+
+cmd=xdg-open
+
+if [ "$(uname)" == "Darwin" ]; then
+    cmd=open
+fi
+
+$cmd "$extract_dir/$html"
