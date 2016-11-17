@@ -7,6 +7,8 @@ execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
+set autoread
+
 set hlsearch
 
 set tabstop=4
