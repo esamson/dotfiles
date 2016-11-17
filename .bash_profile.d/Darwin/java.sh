@@ -1,7 +1,8 @@
-java_home_opts=""
-opts_file=$HOME/.java_home_opts
-if [ -r $opts_file ]; then
-    source $opts_file
+jdk_ln=$HOME/.local/opt/jdk
+
+if [ ! -L $jdk_ln ]; then
+    ln -s "$(/usr/libexec/java_home)" "$jdk_ln"
 fi
-export JAVA_HOME="$(/usr/libexec/java_home $java_home_opts)"
+
+export JAVA_HOME="$jdk_ln"
 pathmunge $JAVA_HOME/bin

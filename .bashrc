@@ -17,6 +17,11 @@ for script in ~/.bashrc.d/*.sh ; do
         . $script
     fi
 done
+for script in ~/.bashrc.d/$(uname)/*.sh ; do
+    if [ -r $script ] ; then
+        . $script
+    fi
+done
 unset script
 
 # vi mode command prompt
