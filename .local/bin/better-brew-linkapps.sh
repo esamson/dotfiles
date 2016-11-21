@@ -12,6 +12,11 @@ __linkapp() {
     local target=$2
 
     echo "Linking $app"
+    appname=$(basename "$app")
+    linkname="${appname%.*}"
+    if [ -f "$target/$linkname" ]; then
+        rm "$target/$linkname"
+    fi
     osascript -e "tell application \"Finder\" to make alias file to POSIX file \"$app\" at POSIX file \"$target\""
 }
 
