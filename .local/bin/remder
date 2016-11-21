@@ -14,7 +14,7 @@
 import $ivy.`com.atlassian.commonmark:commonmark:0.7.1`
 import $ivy.`com.atlassian.commonmark:commonmark-ext-gfm-tables:0.7.1`
 import $ivy.`com.lihaoyi::scalatags:0.6.0`
-import $ivy.`net.sourceforge.plantuml:plantuml:8048`
+import $ivy.`net.sourceforge.plantuml:plantuml:8050`
 
 import java.awt.Desktop
 import java.io._
