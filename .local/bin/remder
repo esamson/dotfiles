@@ -179,6 +179,14 @@ pre {
     margin-bottom: 14px;
 }
 
+ol ol {
+    list-style-type: lower-alpha;
+}
+
+ol ol ol {
+    list-style-type: lower-roman;
+}
+
 p {
     margin: 1em 0;
     line-height: 1.5em;
