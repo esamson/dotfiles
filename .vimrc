@@ -45,10 +45,12 @@ map <leader>n :NERDTreeToggle<CR>
 " Ignore files in .gitignore
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
-" Format JSON
-autocmd Filetype json command Format :%!prettyPrintJson
-
-autocmd VimEnter * if exists(":Format") | exe "map <leader>f :Format\<CR>" | endif
+" vim-autoformat
+noremap <leader>f :Autoformat<CR>
+let g:formatdef_pretty_print_json = "'prettyPrintJson'"
+let g:formatters_json = ['pretty_print_json']
+let g:formatdef_scalafmt = "'scalafmt'"
+let g:formatters_scala = ['scalafmt']
 
 " Preview Markdown
 autocmd Filetype markdown nmap <leader>p :w \| :silent !remder '%'<CR>
