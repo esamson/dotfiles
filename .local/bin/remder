@@ -67,6 +67,18 @@ def render(title: String, source: String) = {
     build()
   val output = renderer.render(document)
 
+  val htmlBody = document.getFirstChild match {
+    case h: Heading if (h.getLevel == 1) =>
+      body(
+        raw(output)
+      )
+    case _ =>
+      body(
+        h1(title),
+        raw(output)
+      )
+  }
+
   html(
     head(
       tag("title")(
@@ -76,10 +88,7 @@ def render(title: String, source: String) = {
         raw(css.map(read ! _).getOrElse(DefaultCss))
       )
     ),
-    body(
-      h1(title),
-      raw(output)
-    )
+    htmlBody
   ).render
 }
 
