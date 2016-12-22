@@ -27,8 +27,6 @@ unset script
 # vi mode command prompt
 set -o vi
 
-PS1="[\[\033[36m\]\u\[\033[m\]@\h \[\033[32m\]\W\[\033[m\]]\$ "
-
 HISTSIZE=10000
 HISTFILESIZE=10000
 HISTCONTROL=ignoreboth
