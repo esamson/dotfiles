@@ -4,9 +4,8 @@
 # Instead of deleting, just move to ~/Downloads. Let `purgeOld` clean it up
 # eventually.
  
-FILES=$*
 DIR=~/Downloads/.arm-`date "+%Y-%m-%d_%H-%M-%S"`-"$RANDOM"
 
 mkdir -p $DIR
-mv $FILES $DIR &
+mv "$@" $DIR &
 
