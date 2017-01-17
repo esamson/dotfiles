@@ -1,0 +1,16 @@
+# ~/.tmuxinator/scala-repl.yml
+
+name: scala-repl
+root: ~/Downloads
+
+windows:
+  - repl:
+      layout: main-vertical
+      panes:
+        - amm
+        - editor:
+          - vim
+          - ':SlimeSend'
+          - ''
+          - '0.0'
+          - ':set syntax=scala'

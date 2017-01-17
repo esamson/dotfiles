@@ -22,3 +22,6 @@
 [submodule ".vim/bundle/vim-autoformat"]
 	path = .vim/bundle/vim-autoformat
 	url = git@github.com:Chiel92/vim-autoformat.git
+[submodule ".vim/bundle/vim-slime"]
+	path = .vim/bundle/vim-slime
+	url = git@github.com:jpalardy/vim-slime.git

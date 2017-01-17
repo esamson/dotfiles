@@ -54,3 +54,6 @@ let g:formatters_scala = ['scalafmt']
 
 " Preview Markdown
 autocmd Filetype markdown nmap <leader>p :w \| :silent !remder '%'<CR>
+
+" vim-slime configuration
+let g:slime_target = "tmux"
