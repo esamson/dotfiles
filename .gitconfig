@@ -15,3 +15,5 @@
 	ff = !sh -c 'branch=$(git symbolic-ref HEAD | cut -d '/' -f 3) && git merge --ff-only origin/$branch'
 [diff]
 	algorithm = histogram
+[fetch]
+	prune = true
