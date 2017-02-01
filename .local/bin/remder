@@ -171,7 +171,7 @@ val DefaultCss = """
 body {
     word-wrap: break-word;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-size: 14px;
+    font-size: 12.8px;
     color: black;
     line-height: 1.5;
     padding: 0.7em;
@@ -185,7 +185,7 @@ dl,
 table,
 pre {
     margin-top: 0;
-    margin-bottom: 14px;
+    margin-bottom: 12.8px;
 }
 
 ol ol {
@@ -234,7 +234,7 @@ li+li {
 }
 
 li>p {
-    margin-top: 14px;
+    margin-top: 12.8px;
 }
 
 dl {
@@ -243,22 +243,22 @@ dl {
 
 dl dt {
     padding: 0;
-    margin-top: 14px;
+    margin-top: 12.8px;
     font-size: 1em;
     font-style: italic;
     font-weight: bold;
 }
 
 dl dd {
-    padding: 0 14px;
-    margin-bottom: 14px;
+    padding: 0 12.8px;
+    margin-bottom: 12.8px;
 }
 
 table {
     display: block;
     width: 100%;
     overflow: auto;
-    font-size: 14px;
+    font-size: 12.8px;
     border-spacing: 0;
     border-collapse: collapse;
 }
@@ -290,7 +290,7 @@ code::after {
 }
 
 pre {
-    padding: 14px;
+    padding: 12.8px;
     overflow: auto;
     font-size: 85%;
     line-height: 1.45;
@@ -339,7 +339,7 @@ a:hover, a:active {
 
 h1, h2, h3, h4, h5, h6 {
     margin-top: 24px;
-    margin-bottom: 14px;
+    margin-bottom: 12.8px;
     font-weight: 600;
     line-height: 1.25;
 }
