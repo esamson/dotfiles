@@ -7,6 +7,7 @@
  */
 
 import java.net.HttpURLConnection.HTTP_PARTIAL
+import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import java.nio.file.StandardOpenOption._
 import java.nio.file.{Files, Paths}
 
@@ -53,14 +54,17 @@ def main(url: String) = {
     download(request)
   }
 
-  val outFile = Paths.get(sys.props("user.dir")).resolve(fileName)
+  val outFile = Files.createTempFile("daac", "out")
 
   downloads.zipWithIndex.foreach { case (download, index) =>
     val part = Await.result(download, Duration.Inf)
     Files.write(outFile, Files.readAllBytes(part), CREATE, APPEND)
   }
 
-  println(s"Saved to $outFile")
+  val destFile = Paths.get(sys.props("user.dir")).resolve(fileName)
+  Files.move(outFile, destFile, REPLACE_EXISTING)
+
+  println(s"Saved to $destFile")
 }
 
 def leafReq(loc: String): HttpRequest = {
