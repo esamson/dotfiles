@@ -108,7 +108,7 @@ def main(url: String) = {
     contentRange <- spec.headers.get("Content-Range").flatMap(_.headOption)
     contentSize <- contentRange.split('/').last match {
       case "*" => None
-      case size => Some(size.toInt)
+      case size => Some(size.toLong)
     }
   } yield {
     println(spec)
@@ -125,7 +125,7 @@ def main(url: String) = {
     val splits = {
       val last = contentSize - 1
       for {
-        i <- 0 until contentSize by SplitSize
+        i <- 0L until contentSize by SplitSize
       } yield {
         val start = i
         val end = {
