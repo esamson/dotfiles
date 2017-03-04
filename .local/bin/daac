@@ -10,8 +10,9 @@ import java.net.HttpURLConnection.HTTP_PARTIAL
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import java.nio.file.StandardOpenOption._
 import java.nio.file.{Files, Paths}
+import java.util.concurrent.{Executors, ThreadFactory}
+import java.util.concurrent.TimeUnit._
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent._
 import scala.concurrent.duration.Duration
 import scala.math.{min, pow}
@@ -74,7 +75,7 @@ def retry[T](backoffSlots: Int = 0)(f: => T): T = {
   }
 }
 
-def download(req: HttpRequest) = Future {
+def download(req: HttpRequest)(implicit ec: ExecutionContext) = Future {
   retry() {
     val response = blocking {
       req.asBytes
@@ -99,7 +100,7 @@ def download(req: HttpRequest) = Future {
   }
 }
 
-val SplitSize = 1 << 17
+val SplitSize = 1L << 17
 
 @main
 def main(url: String) = {
@@ -111,7 +112,7 @@ def main(url: String) = {
       case size => Some(size.toLong)
     }
   } yield {
-    println(spec)
+    println(s"Downloading: $spec")
     val fileName = spec.headers.get("Content-Disposition")
       .flatMap(_.headOption)
       .flatMap { contentDisposition =>
@@ -136,16 +137,41 @@ def main(url: String) = {
       }
     }
 
+    val threadPool = Executors.newFixedThreadPool(100, new ThreadFactory {
+      override def newThread(r: Runnable) = {
+        val thread = new Thread(r)
+        thread.setDaemon(true)
+        thread
+      }
+    })
+    implicit val executionContext = ExecutionContext.fromExecutor(threadPool)
+
+    val startTime = System.nanoTime()
     val downloads = splits.map { request =>
       download(request)
+    }
+
+    def printRate(bytes: Long) = {
+      val now = System.nanoTime()
+      val durationSecs = NANOSECONDS.toSeconds(now - startTime)
+      if (durationSecs > 0) {
+        println(s"$bytes bytes in $durationSecs seconds (${bytes / 1024 / durationSecs} KiB/s)")
+      } else {
+        println(s"$bytes bytes in less than a second")
+      }
     }
 
     val outFile = Files.createTempFile("daac", "out")
 
     downloads.zipWithIndex.foreach { case (download, index) =>
       val part = Await.result(download, Duration.Inf)
+      if ((index + 1) % 100 == 0) {
+        printRate((index + 1) * SplitSize)
+      }
       Files.write(outFile, Files.readAllBytes(part), CREATE, APPEND)
     }
+
+    printRate(contentSize)
 
     val destFile = Paths.get(sys.props("user.dir")).resolve(fileName)
     Files.move(outFile, destFile, REPLACE_EXISTING)
