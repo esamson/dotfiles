@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit._
 import scala.concurrent._
 import scala.concurrent.duration.Duration
 import scala.math.{min, pow}
+import scala.math.BigDecimal.RoundingMode
 import scala.util.{Failure, Random, Success, Try}
 import scalaj.http._
 
@@ -101,6 +102,7 @@ def download(req: HttpRequest)(implicit ec: ExecutionContext) = Future {
 }
 
 val SplitSize = 1L << 17
+val ProgressInterval = SECONDS.toNanos(10)
 
 @main
 def main(url: String) = {
@@ -147,31 +149,50 @@ def main(url: String) = {
     implicit val executionContext = ExecutionContext.fromExecutor(threadPool)
 
     val startTime = System.nanoTime()
+    var progressTime = startTime
     val downloads = splits.map { request =>
       download(request)
-    }
-
-    def printRate(bytes: Long) = {
-      val now = System.nanoTime()
-      val durationSecs = NANOSECONDS.toSeconds(now - startTime)
-      if (durationSecs > 0) {
-        println(s"$bytes bytes in $durationSecs seconds (${bytes / 1024 / durationSecs} KiB/s)")
-      } else {
-        println(s"$bytes bytes in less than a second")
-      }
     }
 
     val outFile = Files.createTempFile("daac", "out")
 
     downloads.zipWithIndex.foreach { case (download, index) =>
       val part = Await.result(download, Duration.Inf)
-      if ((index + 1) % 100 == 0) {
-        printRate((index + 1) * SplitSize)
+      val partTime = System.nanoTime()
+      if (partTime > progressTime + ProgressInterval) {
+        progressTime = partTime
+        val bytes = (index + 1) * SplitSize
+        val pct = 100 * bytes / contentSize
+        val durationSecs = NANOSECONDS.toSeconds(progressTime - startTime)
+        println(s"${(1L to (pct / 10)).map(_ => ".").mkString} $pct%" +
+          s" (${bytes / 1024 / durationSecs} KiB/s)")
       }
       Files.write(outFile, Files.readAllBytes(part), CREATE, APPEND)
     }
 
-    printRate(contentSize)
+    val duration = System.nanoTime() - startTime
+    val d = duration match {
+      case ns if NANOSECONDS.toMicros(ns) <= 1 => s"$ns nanoseconds"
+      case us if NANOSECONDS.toMillis(us) <= 1 =>
+        s"${NANOSECONDS.toMicros(us)} microseconds"
+      case ms if NANOSECONDS.toSeconds(ms) <= 1 =>
+        s"${NANOSECONDS.toMillis(ms)} milliseconds"
+      case s if NANOSECONDS.toMinutes(s) <= 1 =>
+        s"${NANOSECONDS.toSeconds(s)} seconds"
+      case m if NANOSECONDS.toHours(m) <= 1 =>
+        val minutes = NANOSECONDS.toMinutes(m)
+        val seconds = NANOSECONDS.toSeconds(m) % 60
+        s"$minutes minutes and $seconds seconds"
+      case h =>
+        val hours = NANOSECONDS.toHours(h)
+        val minutes = NANOSECONDS.toMinutes(h) % 60
+        val seconds = NANOSECONDS.toSeconds(h) % (60 * 60)
+        s"$hours hours, $minutes minutes, and $seconds seconds"
+    }
+    val r = (BigDecimal(contentSize) / 1024 / duration * SECONDS.toNanos(1))
+      .setScale(2, RoundingMode.HALF_UP)
+      .bigDecimal.toPlainString
+    println(s"Downloaded $contentSize bytes in $d ($r KiB/s)")
 
     val destFile = Paths.get(sys.props("user.dir")).resolve(fileName)
     Files.move(outFile, destFile, REPLACE_EXISTING)
