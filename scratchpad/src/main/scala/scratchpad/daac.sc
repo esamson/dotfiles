@@ -1,19 +1,26 @@
+import scratchpad.Worksheet
+
+/**
+  * Worksheet utils
+  */
+val ws = Worksheet("daac")
+def println(msg: String) = ws.log(msg)
+
 import java.net.HttpURLConnection.HTTP_PARTIAL
+import java.net.URI
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import java.nio.file.StandardOpenOption._
 import java.nio.file.{Files, Paths}
-import java.util.concurrent.{Executors, ThreadFactory}
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit._
+import java.util.concurrent.atomic.AtomicLong
 
 import scala.concurrent._
 import scala.concurrent.duration.Duration
 import scala.math.{min, pow}
+import scala.math.BigDecimal.RoundingMode
 import scala.util.{Failure, Random, Success, Try}
 import scalaj.http._
-import scratchpad.Worksheet
-
-val ws = Worksheet("daac")
-def println(msg: String) = ws.log(msg)
 
 case class DownloadSpec(url: String, headers: Map[String, IndexedSeq[String]])
 
@@ -21,7 +28,7 @@ case class DownloadSpec(url: String, headers: Map[String, IndexedSeq[String]])
 def inspect(url: String): Option[DownloadSpec] = {
   val req = Http(url)
     .header("Range", s"bytes=0-0")
-  val probe = req.exec((code, headers, inputStream) => {
+  val probe = req.exec((_, headers, inputStream) => {
     // ignore body
     inputStream.close()
     DownloadSpec(url, headers)
@@ -71,7 +78,8 @@ def retry[T](backoffSlots: Int = 0)(f: => T): T = {
   }
 }
 
-def download(req: HttpRequest)(implicit ec: ExecutionContext) = Future {
+def download(req: HttpRequest, progressAccumulator: AtomicLong)(
+  implicit ec: ExecutionContext) = Future {
   retry() {
     val response = blocking {
       req.asBytes
@@ -89,6 +97,8 @@ def download(req: HttpRequest)(implicit ec: ExecutionContext) = Future {
     require(contentLength == response.body.length,
       s"Expected $contentLength bytes but downloaded ${response.body.length}.")
 
+    progressAccumulator.addAndGet(response.body.length)
+
     val tmpFile = Files.createTempFile("daac", "tmp")
     tmpFile.toFile.deleteOnExit()
     Files.write(tmpFile, response.body)
@@ -97,7 +107,9 @@ def download(req: HttpRequest)(implicit ec: ExecutionContext) = Future {
 }
 
 val SplitSize = 1L << 17
+val ProgressInterval = SECONDS.toMillis(10)
 
+// main
 def main(url: String) = {
   val result = for {
     spec <- inspect(url)
@@ -115,7 +127,7 @@ def main(url: String) = {
           .find(_.startsWith("filename"))
           .map(_.split('=').last)
       }
-      .getOrElse(spec.url.split('/').last)
+      .getOrElse(new URI(spec.url).getPath.split('/').last)
     val request = Http(spec.url)
 
     val splits = {
@@ -132,41 +144,94 @@ def main(url: String) = {
       }
     }
 
-    val threadPool = Executors.newFixedThreadPool(100, new ThreadFactory {
-      override def newThread(r: Runnable) = {
-        val thread = new Thread(r)
-        thread.setDaemon(true)
-        thread
-      }
+    val threadPool = Executors.newFixedThreadPool(100, (r: Runnable) => {
+      val thread = new Thread(r)
+      thread.setDaemon(true)
+      thread.setPriority(Thread.MIN_PRIORITY)
+      thread
     })
     implicit val executionContext = ExecutionContext.fromExecutor(threadPool)
 
+    val progressAccumulator = new AtomicLong()
     val startTime = System.nanoTime()
     val downloads = splits.map { request =>
-      download(request)
+      download(request, progressAccumulator)
     }
 
-    def printRate(bytes: Long) = {
-      val now = System.nanoTime()
-      val durationSecs = NANOSECONDS.toSeconds(now - startTime)
-      if (durationSecs > 0) {
-        println(s"$bytes bytes in $durationSecs seconds (${bytes / 1024 / durationSecs} KiB/s)")
-      } else {
-        println(s"$bytes bytes in less than a second")
+    val progressReporter = new Thread(() => {
+      var lastReportBytes = 0L
+      var lastReportTime = startTime
+
+      def rate(currentSize: Long, nanoTime: Long) = {
+        (BigDecimal(currentSize - lastReportBytes) /
+          1024 /
+          (nanoTime - lastReportTime) * SECONDS.toNanos(1))
+          .setScale(2, RoundingMode.HALF_UP)
+          .bigDecimal.toPlainString
       }
-    }
+
+      while (progressAccumulator.get() < contentSize) {
+        try {
+          Thread.sleep(ProgressInterval)
+        } catch {
+          case _: InterruptedException =>
+            val partTime = System.nanoTime()
+            println(".......... 100%" +
+              s" (${rate(contentSize, partTime)} KiB/s)")
+        }
+
+        if (!Thread.interrupted() &&
+          progressAccumulator.get() < contentSize) {
+
+          val partTime = System.nanoTime()
+          val bytes = progressAccumulator.get()
+          val pct = 100 * bytes / contentSize
+          println(s"${(1L to (pct / 10)).map(_ => ".").mkString} $pct%" +
+            s" (${rate(bytes, partTime)} KiB/s)")
+
+          lastReportBytes = bytes
+          lastReportTime = partTime
+        }
+      }
+    })
+    progressReporter.setDaemon(true)
+    progressReporter.setPriority(Thread.MAX_PRIORITY)
+    progressReporter.start()
 
     val outFile = Files.createTempFile("daac", "out")
 
-    downloads.zipWithIndex.foreach { case (download, index) =>
+    downloads.zipWithIndex.foreach { case (download, _) =>
       val part = Await.result(download, Duration.Inf)
-      if ((index + 1) % 100 == 0) {
-        printRate((index + 1) * SplitSize)
-      }
       Files.write(outFile, Files.readAllBytes(part), CREATE, APPEND)
     }
 
-    printRate(contentSize)
+    progressReporter.interrupt()
+
+    val duration = System.nanoTime() - startTime
+    val d = duration match {
+      case ns if NANOSECONDS.toMicros(ns) <= 1 => s"$ns nanoseconds"
+      case us if NANOSECONDS.toMillis(us) <= 1 =>
+        s"${NANOSECONDS.toMicros(us)} microseconds"
+      case ms if NANOSECONDS.toSeconds(ms) <= 1 =>
+        s"${NANOSECONDS.toMillis(ms)} milliseconds"
+      case s if NANOSECONDS.toMinutes(s) <= 1 =>
+        s"${NANOSECONDS.toSeconds(s)} seconds"
+      case m if NANOSECONDS.toHours(m) <= 1 =>
+        val minutes = NANOSECONDS.toMinutes(m)
+        val seconds = NANOSECONDS.toSeconds(m) % 60
+        s"$minutes minutes and $seconds seconds"
+      case h =>
+        val hours = NANOSECONDS.toHours(h)
+        val minutes = NANOSECONDS.toMinutes(h) % 60
+        val seconds = NANOSECONDS.toSeconds(h) % (60 * 60)
+        s"$hours hours, $minutes minutes, and $seconds seconds"
+    }
+    val r = (BigDecimal(contentSize) / 1024 / duration * SECONDS.toNanos(1))
+      .setScale(2, RoundingMode.HALF_UP)
+      .bigDecimal.toPlainString
+
+    progressReporter.join()
+    println(s"Downloaded $contentSize bytes in $d ($r KiB/s)")
 
     val destFile = Paths.get(sys.props("user.dir")).resolve(fileName)
     Files.move(outFile, destFile, REPLACE_EXISTING)
@@ -178,4 +243,5 @@ def main(url: String) = {
 
 //val url = "http://mirrors.jenkins.io/war-stable/latest/jenkins.war"
 val url = "https://github.com/yhatt/marp/releases/download/v0.0.10/0.0.10-Marp-darwin-x64.dmg"
+//val url = "http://alaska.epfl.ch/~dockermoocs/parprog1/scalashop.zip"
 main(url)
