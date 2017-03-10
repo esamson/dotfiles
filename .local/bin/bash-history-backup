@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+DIR="$HOME/.bash_history.bak"
+mkdir -p "$DIR"
+
+LATEST=`ls -rt "$DIR" | tail -1`
+
+NOW=`date "+%Y-%m-%d-%H"`
+FILE="$DIR/bash_history.$NOW"
+cp "$HOME/.bash_history" "$FILE"
+
+if [ -f "$LATEST" ]; then
+    diff "$DIR/$LATEST" "$FILE" > /dev/null 2>&1
+    DIFF=$?
+
+    if [ $DIFF -eq 0 ]; then
+        rm "$FILE"
+    fi
+fi
