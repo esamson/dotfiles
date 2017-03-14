@@ -7,6 +7,7 @@
  */
 
 import java.net.HttpURLConnection.HTTP_PARTIAL
+import java.net.URI
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import java.nio.file.StandardOpenOption._
 import java.nio.file.{Files, Paths}
@@ -126,7 +127,7 @@ def main(url: String) = {
           .find(_.startsWith("filename"))
           .map(_.split('=').last)
       }
-      .getOrElse(spec.url.split('/').last)
+      .getOrElse(new URI(spec.url).getPath.split('/').last)
     val request = Http(spec.url)
 
     val splits = {
