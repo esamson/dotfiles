@@ -9,6 +9,7 @@ lazy val root = (project in file(".")).settings(
     )),
   name := "scratchpad",
   libraryDependencies ++= Seq(
+    jsoup,
     logback,
     scalajHttp
   )

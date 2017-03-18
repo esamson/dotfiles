@@ -1,6 +1,9 @@
 import sbt._
 
 object Dependencies {
+
+  lazy val jsoup = "org.jsoup" % "jsoup" % "1.10.2"
   lazy val logback = "ch.qos.logback" % "logback-classic" % "1.2.1"
   lazy val scalajHttp = "org.scalaj" %% "scalaj-http" % "2.3.0"
+
 }
