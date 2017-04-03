@@ -51,7 +51,7 @@ def chkpcso(combination: Int*) = {
        """.stripMargin)
   } else {
     val (winners, losers) = results partition { result =>
-      result.combination.count(combination.contains(_)) >= 3
+      result.combination.count(combination.contains(_)) >= 4
     }
     val bigJackpot = losers.filter(_.jackpot > 100000000)
 
@@ -63,7 +63,7 @@ def chkpcso(combination: Int*) = {
         }")
     if (winners.nonEmpty)
       println(s"Winners:\n${winners.mkString("\n")}")
-    if (losers.nonEmpty)
+    if (bigJackpot.nonEmpty)
       println(s"Big jackpot:\n${bigJackpot.mkString("\n")}")
   }
 }
