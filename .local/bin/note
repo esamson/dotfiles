@@ -10,7 +10,11 @@ if [ $# -gt 0 ]; then
     TITLE=$*
 
     found="$TMPDIR"notes.found.$RANDOM
-    find $DIR -iname "*$TITLE*" | sed "s|$DIR/||" > $found
+    if [ "$TITLE" == "--recent" ]; then
+        find $DIR -atime -1w -iname '*.md' | sed "s|$DIR/||" > $found
+    else
+        find $DIR -iname "*$TITLE*" | sed "s|$DIR/||" > $found
+    fi
 
     declare -a notes
     count=0
