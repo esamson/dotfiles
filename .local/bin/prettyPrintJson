@@ -7,7 +7,7 @@
  */
 
 import java.io._
-import $ivy.`com.typesafe.play::play-json:2.5.8`,
+import $ivy.`com.typesafe.play::play-json:2.6.0-M6`,
     play.api.libs.json.Json
 
 @main
