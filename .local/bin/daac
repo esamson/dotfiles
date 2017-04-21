@@ -6,6 +6,7 @@
  * requires http://www.lihaoyi.com/Ammonite/
  */
 
+import java.net.HttpCookie
 import java.net.HttpURLConnection.HTTP_PARTIAL
 import java.net.URI
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
@@ -25,9 +26,10 @@ import scalaj.http._
 case class DownloadSpec(url: String, headers: Map[String, IndexedSeq[String]])
 
 @scala.annotation.tailrec
-def inspect(url: String): Option[DownloadSpec] = {
+def inspect(url: String, cookies: Seq[HttpCookie]): Option[DownloadSpec] = {
   val req = Http(url)
     .header("Range", s"bytes=0-0")
+    .cookies(cookies)
   val probe = req.exec((_, headers, inputStream) => {
     // ignore body
     inputStream.close()
@@ -35,7 +37,7 @@ def inspect(url: String): Option[DownloadSpec] = {
   })
 
   probe match {
-    case r if r.isRedirect => inspect(r.location.get)
+    case r if r.isRedirect => inspect(r.location.get, cookies)
     case s if s.code == HTTP_PARTIAL => Option(s.body)
     case x =>
       println(s"Cannot download. Server returned ${x.code}; ${x.headers}")
@@ -109,10 +111,19 @@ def download(req: HttpRequest, progressAccumulator: AtomicLong)(
 val SplitSize = 1L << 17
 val ProgressInterval = SECONDS.toMillis(10)
 
+def cookies(url: String): Seq[HttpCookie] = {
+  val uri = new URI(url)
+  if (uri.getHost == "download.oracle.com") {
+    Seq(new HttpCookie("oraclelicense", "accept-securebackup-cookie"))
+  } else {
+    Nil
+  }
+}
+
 @main
 def main(url: String) = {
   val result = for {
-    spec <- inspect(url)
+    spec <- inspect(url, cookies(url))
     contentRange <- spec.headers.get("Content-Range").flatMap(_.headOption)
     contentSize <- contentRange.split('/').last match {
       case "*" => None
