@@ -127,6 +127,7 @@ def download(req: HttpRequest, progressAccumulator: AtomicLong)(
 
 val SplitSize = 1L << 17
 val ProgressInterval = SECONDS.toMillis(10)
+val SmoothingFactor = BigDecimal("0.05")
 
 def cookies(url: String): Seq[HttpCookie] = {
   val uri = new URI(url)
@@ -187,7 +188,7 @@ def main(url: String) = {
     }
 
     def prettyPrint(nanos: Long) = nanos match {
-      case ns if NANOSECONDS.toMicros(ns) <= 1 => s"$ns nanoseconds"
+      case ns if NANOSECONDS.toMicros(ns) <= 1 => s"$ns nanosecond${if (ns == 1) "" else "s"}"
       case us if NANOSECONDS.toMillis(us) <= 1 =>
         s"${NANOSECONDS.toMicros(us)} microseconds"
       case ms if NANOSECONDS.toSeconds(ms) <= 1 =>
@@ -197,17 +198,18 @@ def main(url: String) = {
       case m if NANOSECONDS.toHours(m) <= 1 =>
         val minutes = NANOSECONDS.toMinutes(m)
         val seconds = NANOSECONDS.toSeconds(m) % 60
-        s"$minutes minutes and $seconds seconds"
+        s"$minutes minutes and $seconds second${if (seconds == 1) "" else "s"}"
       case h =>
         val hours = NANOSECONDS.toHours(h)
         val minutes = NANOSECONDS.toMinutes(h) % 60
         val seconds = NANOSECONDS.toSeconds(h) % (60 * 60)
-        s"$hours hours, $minutes minutes, and $seconds seconds"
+        s"$hours hours, $minutes minutes, and $seconds second${if (seconds == 1) "" else "s"}"
     }
 
     val progressReporter = new Thread(() => {
       var lastReportBytes = 0L
       var lastReportTime = startTime
+      var aveRate: Option[BigDecimal] = None
 
       def bytesPerSecond(currentSize: Long, nanoTime: Long): BigDecimal = {
         BigDecimal(currentSize - lastReportBytes) /
@@ -237,9 +239,14 @@ def main(url: String) = {
           val bytes = progressAccumulator.get()
           val pct = 100 * bytes / contentSize
           val rate = bytesPerSecond(bytes, partTime)
+
+          aveRate = aveRate.map(ave =>
+            SmoothingFactor * rate + (1 - SmoothingFactor) * ave
+          ).orElse(Some(rate))
+
           val eta = prettyPrint(
             (
-              ((contentSize - bytes) / rate)
+              ((contentSize - bytes) / aveRate.get)
                 * SECONDS.toNanos(1)
               ).longValue())
           println(s"${(1L to (pct / 10)).map(_ => ".").mkString} $pct%" +
