@@ -23,7 +23,24 @@ import scala.math.BigDecimal.RoundingMode
 import scala.util.{Failure, Random, Success, Try}
 import scalaj.http._
 
-case class DownloadSpec(url: String, headers: Map[String, IndexedSeq[String]])
+case class DownloadSpec(url: String, headers: Map[String, IndexedSeq[String]]) {
+
+  def pretty(values: Seq[String]): String = values.length match {
+    case 0 => "[]"
+    case 1 => values.head
+    case _ => values.mkString("[\n    ", "\n    ", "  \n]")
+  }
+
+  def prettyPrint(headers: Map[String, IndexedSeq[String]]): String = {
+    headers.map({ case (header, values) => s"$header = ${pretty(values)}" })
+      .mkString("\n  ")
+  }
+
+  override def toString: String =
+    s"""DownloadSpec($url
+       |  ${prettyPrint(headers)}
+       |)""".stripMargin
+}
 
 @scala.annotation.tailrec
 def inspect(url: String, cookies: Seq[HttpCookie]): Option[DownloadSpec] = {
@@ -169,14 +186,36 @@ def main(url: String) = {
       download(request, progressAccumulator)
     }
 
+    def prettyPrint(nanos: Long) = nanos match {
+      case ns if NANOSECONDS.toMicros(ns) <= 1 => s"$ns nanoseconds"
+      case us if NANOSECONDS.toMillis(us) <= 1 =>
+        s"${NANOSECONDS.toMicros(us)} microseconds"
+      case ms if NANOSECONDS.toSeconds(ms) <= 1 =>
+        s"${NANOSECONDS.toMillis(ms)} milliseconds"
+      case s if NANOSECONDS.toMinutes(s) <= 1 =>
+        s"${NANOSECONDS.toSeconds(s)} seconds"
+      case m if NANOSECONDS.toHours(m) <= 1 =>
+        val minutes = NANOSECONDS.toMinutes(m)
+        val seconds = NANOSECONDS.toSeconds(m) % 60
+        s"$minutes minutes and $seconds seconds"
+      case h =>
+        val hours = NANOSECONDS.toHours(h)
+        val minutes = NANOSECONDS.toMinutes(h) % 60
+        val seconds = NANOSECONDS.toSeconds(h) % (60 * 60)
+        s"$hours hours, $minutes minutes, and $seconds seconds"
+    }
+
     val progressReporter = new Thread(() => {
       var lastReportBytes = 0L
       var lastReportTime = startTime
 
-      def rate(currentSize: Long, nanoTime: Long) = {
-        (BigDecimal(currentSize - lastReportBytes) /
-          1024 /
-          (nanoTime - lastReportTime) * SECONDS.toNanos(1))
+      def bytesPerSecond(currentSize: Long, nanoTime: Long): BigDecimal = {
+        BigDecimal(currentSize - lastReportBytes) /
+          (nanoTime - lastReportTime) * SECONDS.toNanos(1)
+      }
+
+      def fmt(rate: BigDecimal): String = {
+        (rate / 1024)
           .setScale(2, RoundingMode.HALF_UP)
           .bigDecimal.toPlainString
       }
@@ -188,7 +227,7 @@ def main(url: String) = {
           case _: InterruptedException =>
             val partTime = System.nanoTime()
             println(".......... 100%" +
-              s" (${rate(contentSize, partTime)} KiB/s)")
+              s" (${fmt(bytesPerSecond(contentSize, partTime))} KiB/s)")
         }
 
         if (!Thread.interrupted() &&
@@ -197,8 +236,14 @@ def main(url: String) = {
           val partTime = System.nanoTime()
           val bytes = progressAccumulator.get()
           val pct = 100 * bytes / contentSize
+          val rate = bytesPerSecond(bytes, partTime)
+          val eta = prettyPrint(
+            (
+              ((contentSize - bytes) / rate)
+                * SECONDS.toNanos(1)
+              ).longValue())
           println(s"${(1L to (pct / 10)).map(_ => ".").mkString} $pct%" +
-            s" (${rate(bytes, partTime)} KiB/s)")
+            s" (${fmt(rate)} KiB/s; ETA $eta)")
 
           lastReportBytes = bytes
           lastReportTime = partTime
@@ -219,30 +264,12 @@ def main(url: String) = {
     progressReporter.interrupt()
 
     val duration = System.nanoTime() - startTime
-    val d = duration match {
-      case ns if NANOSECONDS.toMicros(ns) <= 1 => s"$ns nanoseconds"
-      case us if NANOSECONDS.toMillis(us) <= 1 =>
-        s"${NANOSECONDS.toMicros(us)} microseconds"
-      case ms if NANOSECONDS.toSeconds(ms) <= 1 =>
-        s"${NANOSECONDS.toMillis(ms)} milliseconds"
-      case s if NANOSECONDS.toMinutes(s) <= 1 =>
-        s"${NANOSECONDS.toSeconds(s)} seconds"
-      case m if NANOSECONDS.toHours(m) <= 1 =>
-        val minutes = NANOSECONDS.toMinutes(m)
-        val seconds = NANOSECONDS.toSeconds(m) % 60
-        s"$minutes minutes and $seconds seconds"
-      case h =>
-        val hours = NANOSECONDS.toHours(h)
-        val minutes = NANOSECONDS.toMinutes(h) % 60
-        val seconds = NANOSECONDS.toSeconds(h) % (60 * 60)
-        s"$hours hours, $minutes minutes, and $seconds seconds"
-    }
     val r = (BigDecimal(contentSize) / 1024 / duration * SECONDS.toNanos(1))
       .setScale(2, RoundingMode.HALF_UP)
       .bigDecimal.toPlainString
 
     progressReporter.join()
-    println(s"Downloaded $contentSize bytes in $d ($r KiB/s)")
+    println(s"Downloaded $contentSize bytes in ${prettyPrint(duration)} ($r KiB/s)")
 
     val destFile = Paths.get(sys.props("user.dir")).resolve(fileName)
     Files.move(outFile, destFile, REPLACE_EXISTING)
