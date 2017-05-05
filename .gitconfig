@@ -19,3 +19,5 @@
 	prune = true
 [pull]
 	ff = only
+[commit]
+	cleanup = scissors
