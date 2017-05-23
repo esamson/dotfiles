@@ -244,11 +244,16 @@ def main(url: String) = {
             SmoothingFactor * rate + (1 - SmoothingFactor) * ave
           ).orElse(Some(rate))
 
-          val eta = prettyPrint(
-            (
-              ((contentSize - bytes) / aveRate.get)
-                * SECONDS.toNanos(1)
-              ).longValue())
+          val eta = if (aveRate.get == BigDecimal(0)) {
+            "∞"
+          } else {
+            prettyPrint(
+              (
+                  ((contentSize - bytes) / aveRate.get)
+                      * SECONDS.toNanos(1)
+              ).longValue()
+            )
+          }
           println(s"${(1L to (pct / 10)).map(_ => ".").mkString} $pct%" +
             s" (${fmt(rate)} KiB/s; ETA $eta)")
 
