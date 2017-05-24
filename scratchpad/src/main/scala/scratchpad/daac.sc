@@ -6,6 +6,7 @@ import scratchpad.Worksheet
 val ws = Worksheet("daac")
 def println(msg: String) = ws.log(msg)
 
+import java.awt.Desktop
 import java.net.HttpCookie
 import java.net.HttpURLConnection.HTTP_PARTIAL
 import java.net.URI
@@ -57,7 +58,7 @@ def inspect(url: String, cookies: Seq[HttpCookie]): Option[DownloadSpec] = {
     case r if r.isRedirect => inspect(r.location.get, cookies)
     case s if s.code == HTTP_PARTIAL => Option(s.body)
     case x =>
-      println(s"Cannot download. Server returned ${x.code}; ${x.headers}")
+      println(s"Server returned ${x.code}; ${x.body}")
       None
   }
 }
@@ -285,10 +286,16 @@ def main(url: String) = {
 
     val destFile = Paths.get(sys.props("user.dir")).resolve(fileName)
     Files.move(outFile, destFile, REPLACE_EXISTING)
-    s"Saved to $destFile"
   }
 
-  println(result.getOrElse(s"Failed downloading $url"))
+  result match {
+    case Some(path) => println(s"Saved to $path")
+    case None =>
+      println(s"Cannot download $url -- better try with your browser.")
+      if (Desktop.isDesktopSupported) {
+        Desktop.getDesktop.browse(new URI(url))
+      }
+  }
 }
 
 //val url = "http://mirrors.jenkins.io/war-stable/latest/jenkins.war"
