@@ -1,4 +1,4 @@
-#!/usr/bin/env amm -s
+#!/usr/bin/env amm
 
 /**
  * Pretty print a given JSON file. If no file is given, read stdin.
