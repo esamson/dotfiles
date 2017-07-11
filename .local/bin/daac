@@ -155,7 +155,7 @@ def main(url: String) = {
       .flatMap { contentDisposition =>
         contentDisposition.split(""";\s*""")
           .find(_.startsWith("filename"))
-          .map(_.split('=').last)
+          .map(_.split('=').last.replaceAll("^\"|\"$", ""))
       }
       .getOrElse(new URI(spec.url).getPath.split('/').last)
     val request = Http(spec.url)
