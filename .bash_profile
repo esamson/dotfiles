@@ -19,10 +19,6 @@ pathmunge () {
 
 OPT=$HOME/.local/opt
 
-pathmunge $HOME/.local/bin
-pathmunge $HOME/bin
-pathmunge /usr/local/sbin after
-
 export GPG_TTY=$(tty)
 export TMOUT=0
 export EDITOR=vim
@@ -38,6 +34,10 @@ for script in ~/.bash_profile.d/$(uname)/*.sh ; do
     fi
 done
 unset script
+
+pathmunge /usr/local/sbin after
+pathmunge $HOME/.local/bin
+pathmunge $HOME/bin
 
 export PATH
 
