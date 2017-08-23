@@ -23,12 +23,12 @@ export GPG_TTY=$(tty)
 export TMOUT=0
 export EDITOR=vim
 
-for script in ~/.bash_profile.d/*.sh ; do
+for script in ~/.bash_profile.d/$(uname)/*.sh ; do
     if [ -r $script ] ; then
         . $script
     fi
 done
-for script in ~/.bash_profile.d/$(uname)/*.sh ; do
+for script in ~/.bash_profile.d/*.sh ; do
     if [ -r $script ] ; then
         . $script
     fi
