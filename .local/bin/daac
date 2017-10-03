@@ -140,7 +140,13 @@ def cookies(url: String): Seq[HttpCookie] = {
 }
 
 @main
-def main(url: String) = {
+def main(urls: String*) = {
+  for(url <- urls) {
+    downloadUrl(url)
+  }
+}
+
+def downloadUrl(url: String) = {
   val result = for {
     spec <- inspect(url, cookies(url))
     contentRange <- spec.headers.get("Content-Range").flatMap(_.headOption)
