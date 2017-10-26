@@ -1,0 +1,2 @@
+DirAntiPattern=CVS;.deps;.svn;.hg;.git;.idea
+FileAntiPattern=*.orig;*.o;*.obj;*.rej;*.bak;.git
