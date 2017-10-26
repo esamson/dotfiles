@@ -1,2 +1,16 @@
+BgColor=9,32,40
+ColorA=43,118,200
+ColorB=115,138,3
+ColorC=88,90,183
+ColorForConflict=210,27,35
+CurrentRangeBgColor=252,245,220
+CurrentRangeDiffBgColor=234,228,203
+DiffBgColor=12,40,50
 DirAntiPattern=CVS;.deps;.svn;.hg;.git;.idea
+FgColor=70,91,97
 FileAntiPattern=*.orig;*.o;*.obj;*.rej;*.bak;.git
+ManualAlignmentRangeColor=164,118,6
+MidAgeFileColor=164,118,6
+MissingFileColor=9,32,40
+NewestFileColor=115,138,3
+OldestFileColor=210,27,35
