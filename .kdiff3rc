@@ -9,6 +9,7 @@ DiffBgColor=12,40,50
 DirAntiPattern=CVS;.deps;.svn;.hg;.git;.idea
 FgColor=70,91,97
 FileAntiPattern=*.orig;*.o;*.obj;*.rej;*.bak;.git
+Font=Fira Code,12,normal
 ManualAlignmentRangeColor=164,118,6
 MidAgeFileColor=164,118,6
 MissingFileColor=9,32,40
