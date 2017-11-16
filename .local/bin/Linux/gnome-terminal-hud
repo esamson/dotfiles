@@ -1,0 +1,36 @@
+#!/bin/bash
+#
+# Launch gnome-terminal.
+# If it's already running, switch to that window.
+# If it's the current window, minimize it.
+# Bind to a keyboard shortcut (e.g., ctrl+`) for quick access a la
+# Quake HUD.
+#
+# dependencies:
+#    sudo dnf install xdotool wmctrl
+#
+# This doesn't work on Wayland since xdotool doesn't work on Wayland.
+# Stick to X.
+#
+# setup:
+# 
+# 1. Create a Gnome Terminal profile named "hud".
+# 2. Use gnome-terminal-hud-launcher as the custom command for that profile.
+
+windows=`xdotool search --name 'Terminal HUD'`
+
+if [[ -z "$windows" ]] ; then
+    gnome-terminal --full-screen --hide-menubar --profile=hud
+    exit
+fi
+
+active=`xdotool getactivewindow`
+
+for window in $windows; do
+    if [ "$window" -eq "$active" ] ; then
+        xdotool windowminimize $window
+        exit
+    fi
+done
+
+wmctrl -R -F -r 'Terminal HUD'

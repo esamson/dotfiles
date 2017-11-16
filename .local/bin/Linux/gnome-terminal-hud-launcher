@@ -1,0 +1,8 @@
+#!/bin/bash
+#
+# Since Fedora 21, it is no longer possible to set the window title
+# for a Gnome Terminal profile.
+# Use this as a custom command to set the title before launching tmux.
+
+echo -ne '\033]0;Terminal HUD\a'
+tmux new-session -A -s HUD
