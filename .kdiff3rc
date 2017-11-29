@@ -3,6 +3,7 @@ ColorA=43,118,200
 ColorB=115,138,3
 ColorC=88,90,183
 ColorForConflict=210,27,35
+CreateBakFiles=0
 CurrentRangeBgColor=252,245,220
 CurrentRangeDiffBgColor=234,228,203
 DiffBgColor=12,40,50
