@@ -21,3 +21,5 @@
 	ff = only
 [commit]
 	cleanup = scissors
+[mergetool]
+	keepBackup = false
