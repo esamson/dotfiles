@@ -44,6 +44,16 @@ function syncDown() {
     fi
 }
 
+# Copy amm scripts
+function syncAmmScripts() {
+    for sc in amm-scripts/*.sc; do
+        name="$(basename ${sc%%.*})"
+        target="$HOME/.local/bin/$name"
+        echo "#!/usr/bin/env amm" > $target
+        cat $sc >> $target
+    done
+}
+
 # Install dotfiles into home folder
 function syncUp() {
     crontab crontab
@@ -54,6 +64,7 @@ function syncUp() {
         --exclude "**/.git" \
         --exclude "/LICENSE" \
         --exclude "/README.md" \
+        --exclude "/amm-scripts" \
         --exclude "/crontab" \
         --exclude "/bootstrap" \
         --exclude "/installers/" \
@@ -63,6 +74,7 @@ function syncUp() {
         --no-perms \
         --archive . ~
 
+    syncAmmScripts
     chmod go-rwx $HOME
     source ~/.bash_profile
 }

@@ -1,5 +1,3 @@
-#!/usr/bin/env amm
-
 /**
  * Render markdown files.
  *
@@ -8,7 +6,7 @@
  * REMDER_OUTDIR - output directory, /tmp if unset
  * REMDIR_CSS - CSS file, embedded DefaultCss if unset
  *
- * requires http://www.lihaoyi.com/Ammonite/
+ * requires http://ammonite.io/
  */
 
 import $ivy.`com.atlassian.commonmark:commonmark:0.8.0`

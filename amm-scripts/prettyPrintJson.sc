@@ -1,14 +1,12 @@
-#!/usr/bin/env amm
-
 /**
  * Pretty print a given JSON file. If no file is given, read stdin.
  *
- * requires http://www.lihaoyi.com/Ammonite/
+ * requires http://ammonite.io/
  */
 
+import $ivy.`com.typesafe.play::play-json:2.6.7`
 import java.io._
-import $ivy.`com.typesafe.play::play-json:2.6.0-M6`,
-    play.api.libs.json.Json
+import play.api.libs.json.Json
 
 @main
 def main(file: File = null) = {

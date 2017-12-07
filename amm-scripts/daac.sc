@@ -1,9 +1,7 @@
-#!/usr/bin/env amm
-
 /**
  * Download at all costs.
  *
- * requires http://www.lihaoyi.com/Ammonite/
+ * requires http://ammonite.io/
  */
 
 import java.awt.Desktop
