@@ -51,6 +51,7 @@ function syncAmmScripts() {
         target="$HOME/.local/bin/$name"
         echo "#!/usr/bin/env amm" > $target
         cat $sc >> $target
+        chmod +x $target
     done
 }
 

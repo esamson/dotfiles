@@ -10,11 +10,16 @@ lazy val root = (project in file(".")).settings(
     )),
   name := "amm-scripts",
   libraryDependencies ++= Seq(
-    "com.lihaoyi" %% "ammonite" % "1.0.3" cross CrossVersion.full,
-    "com.typesafe.play" %% "play-json" % "2.6.7",
+    "com.lihaoyi" %% "ammonite" % ammoniteVersion cross CrossVersion.full,
+    "com.lihaoyi" %% "ammonite-ops" % ammoniteVersion,
+    "com.typesafe.play" %% "play" % playVersion,
+    "com.typesafe.play" %% "play-json" % playVersion,
+    "com.typesafe.play" %% "play-akka-http-server" % playVersion,
     "com.atlassian.commonmark" % "commonmark" % "0.8.0",
     "com.atlassian.commonmark" % "commonmark-ext-gfm-tables" % "0.8.0",
-    "com.lihaoyi" %% "scalatags" % "0.6.2",
+    "com.lihaoyi" %% "scalatags" % "0.6.7",
     "net.sourceforge.plantuml" % "plantuml" % "1.2017.19"
   )
 )
+val ammoniteVersion = "1.0.3"
+val playVersion = "2.6.7"
