@@ -11,13 +11,13 @@ import $ivy.{
 }
 
 import java.awt.Desktop
-import java.net.{InetAddress, URI}
+import java.net.{NetworkInterface, URI}
 import java.nio.charset.StandardCharsets.UTF_8
 import java.nio.file.Files
 
 import akka.stream.scaladsl.{FileIO, StreamConverters}
-import ammonite.ops._
 import ammonite.ops.ImplicitWd._
+import ammonite.ops._
 import play.api.http.HeaderNames._
 import play.api.http.Status._
 import play.api.http.{ContentTypeOf, ContentTypes, HttpEntity, Writeable}
@@ -26,15 +26,22 @@ import play.api.routing.sird._
 import play.core.server.{AkkaHttpServer, ServerConfig}
 import play.utils.UriEncoding
 
+import scala.collection.JavaConverters._
 import scalatags.Text
 import scalatags.Text.all._
 
 @main
 def main(base: Path = pwd) = {
-  val localhost = InetAddress.getLocalHost.getHostAddress
   val port = 1024 + Math.abs(base.toString().hashCode % (65535 - 1024))
-  val url = s"http://$localhost:$port"
-  println(s"sharing $base at $url")
+  val url = for {
+    nif <- NetworkInterface.getNetworkInterfaces.asScala.toList
+    if !nif.isLoopback
+    if !nif.isPointToPoint
+    if nif.isUp
+    addr <- nif.getInetAddresses.asScala.toList
+    if addr.isSiteLocalAddress
+  } yield s"http://${addr.getHostAddress}:$port"
+  println(s"sharing $base at ${url.mkString(" ")}")
 
   sys.props("config.file") = tmp().toString()
   sys.props("play.http.secret.key") = "secret"
@@ -182,8 +189,9 @@ def main(base: Path = pwd) = {
 
   try {
     println("'q' <enter> quits")
-    if (base.isDir || checkMimeType(base.toString()).startsWith("text")) {
-      Desktop.getDesktop.browse(URI.create(url))
+    if (url.nonEmpty &&
+        (base.isDir || checkMimeType(base.toString()).startsWith("text"))) {
+      Desktop.getDesktop.browse(URI.create(url.head))
     }
     var key = System.in.read()
     while (key != 'q') {
