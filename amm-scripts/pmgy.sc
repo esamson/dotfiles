@@ -84,7 +84,10 @@ def main(base: Path = pwd) = {
         }
 
         def dirList(dir: java.nio.file.Path): Text.TypedTag[String] = ol(
-          for (entry <- dir.toFile.listFiles().sorted) yield {
+          for {
+            entry <- dir.toFile.listFiles().sorted
+            if !entry.isHidden
+          } yield {
             val path = base.toNIO.relativize(entry.toPath).asScala
                 .map(s => UriEncoding.encodePathSegment(s.toString, UTF_8))
                 .mkString("/")
