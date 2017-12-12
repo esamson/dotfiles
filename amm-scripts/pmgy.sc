@@ -111,7 +111,8 @@ def main(base: Path = pwd) = {
             head(
               meta(charset := "utf-8"),
               meta(name := "viewport",
-                content := "width=device-width, initial-scale=1")
+                content := "width=device-width, initial-scale=1"),
+              tag("title")(s"${base.segments.last}")
             ),
             body(
               h1(
