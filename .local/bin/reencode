@@ -17,21 +17,31 @@ __fail() {
 __reencode() {
     local orig=$1
     local base=$(basename "$orig")
-    local out=$OUT_DIR/${base%.*}.mkv
+    local out=$OUT_DIR/${base%.*}.mp4
     local log=$LOG_DIR/${base}.log
     local err=$LOG_DIR/${base}.err
     local streams=$LOG_DIR/${base}.streams
 
     ffprobe -show_streams -print_format flat "$orig" 2>/dev/null >"$streams"
     
-    local audioOpts="aac -strict -2 -b:a 128k -ac 2"
-
-    if grep -q 'codec_name="aac"' "$streams" \
-        || grep -q 'codec_name="mp3"' "$streams"; then
-        audioOpts="copy"
-    fi
-    
     echo "Reencoding $orig to $out"
+
+    echo ffmpeg -i "$orig" \
+        -c:v libx264 \
+            -preset veryslow \
+            -profile:v high \
+            -level 4.1 \
+            -crf 18 \
+            -maxrate 2000k \
+            -bufsize 2000k \
+            -pix_fmt yuv420p \
+            -force_key_frames "expr:gte(t,n_forced*5)" \
+            -vf "scale=trunc(min(max(iw\,ih*dar)\,1280)/2)*2:trunc(ow/dar/2)*2" \
+            -x264opts bframes=3:cabac=1 \
+            -movflags +faststart \
+        -c:a $audioOpts \
+        -xerror \
+        -y "$out"
 
     ffmpeg -i "$orig" \
         -c:v libx264 \
@@ -46,7 +56,10 @@ __reencode() {
             -vf "scale=trunc(min(max(iw\,ih*dar)\,1280)/2)*2:trunc(ow/dar/2)*2" \
             -x264opts bframes=3:cabac=1 \
             -movflags +faststart \
-        -c:a $audioOpts \
+        -c:a aac \
+            -strict -2 \
+            -b:a 128k \
+            -ac 2
         -xerror \
         -y "$out" </dev/null \
         > "$log" \
