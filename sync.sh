@@ -23,6 +23,7 @@ function syncDown() {
         -not -path '*/.git' \
         -not -path './LICENSE' \
         -not -path './README.md' \
+        -not -path './amm-scripts/*' \
         -not -path './crontab' \
         -not -path './bootstrap' \
         -not -path './installers/*' \
