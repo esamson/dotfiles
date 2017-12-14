@@ -20,6 +20,11 @@ if [ "$(uname)" == "Darwin" ]; then
     alias gvim=mvim
 fi
 
+# Quick access to SBT target directory
+# see: ~/.sbt/1.0/tmptarget.sbt
+alias tmpsbt='cd /tmp/sbt`pwd`'
+alias tmpsbtclean='mv /tmp/sbt`pwd` /tmp/sbt`pwd`/../$RANDOM'
+
 # Create a new alias from the last command
 # https://medium.com/the-lazy-developer/an-alias-for-new-aliases-c6500ae0f73e
 new-alias() {
