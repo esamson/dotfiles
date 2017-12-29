@@ -39,7 +39,10 @@ __reencode() {
             -vf "scale=trunc(min(max(iw\,ih*dar)\,1280)/2)*2:trunc(ow/dar/2)*2" \
             -x264opts bframes=3:cabac=1 \
             -movflags +faststart \
-        -c:a $audioOpts \
+        -c:a aac \
+            -strict -2 \
+            -b:a 128k \
+            -ac 2 \
         -xerror \
         -y "$out"
 
@@ -59,7 +62,7 @@ __reencode() {
         -c:a aac \
             -strict -2 \
             -b:a 128k \
-            -ac 2
+            -ac 2 \
         -xerror \
         -y "$out" </dev/null \
         > "$log" \
