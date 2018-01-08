@@ -33,6 +33,11 @@ import scalatags.Text.all._
 @main
 def main(base: Path = pwd) = {
   val port = 1024 + Math.abs(base.toString().hashCode % (65535 - 1024))
+  val urlPath = if (base.isDir) {
+    ""
+  } else {
+    UriEncoding.encodePathSegment(base.name, UTF_8)
+  }
   val url = for {
     nif <- NetworkInterface.getNetworkInterfaces.asScala.toList
     if !nif.isLoopback
@@ -40,7 +45,7 @@ def main(base: Path = pwd) = {
     if nif.isUp
     addr <- nif.getInetAddresses.asScala.toList
     if addr.isSiteLocalAddress
-  } yield s"http://${addr.getHostAddress}:$port"
+  } yield s"http://${addr.getHostAddress}:$port/$urlPath"
   println(s"sharing $base at ${url.mkString(" ")}")
 
   sys.props("config.file") = tmp().toString()
