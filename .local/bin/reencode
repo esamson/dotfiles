@@ -28,10 +28,11 @@ __reencode() {
 
     echo ffmpeg -i "$orig" \
         -c:v libx264 \
-            -preset veryslow \
+            -preset ultrafast \
             -profile:v high \
             -level 4.1 \
-            -crf 18 \
+            -crf 23 \
+            -tune film \
             -maxrate 2000k \
             -bufsize 2000k \
             -pix_fmt yuv420p \
@@ -48,10 +49,11 @@ __reencode() {
 
     ffmpeg -i "$orig" \
         -c:v libx264 \
-            -preset veryslow \
+            -preset ultrafast \
             -profile:v high \
             -level 4.1 \
-            -crf 18 \
+            -crf 23 \
+            -tune film \
             -maxrate 2000k \
             -bufsize 2000k \
             -pix_fmt yuv420p \
