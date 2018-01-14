@@ -37,7 +37,6 @@ __reencode() {
             -bufsize 2000k \
             -pix_fmt yuv420p \
             -force_key_frames "expr:gte(t,n_forced*5)" \
-            -vf "scale=trunc(min(max(iw\,ih*dar)\,1280)/2)*2:trunc(ow/dar/2)*2" \
             -x264opts bframes=3:cabac=1 \
             -movflags +faststart \
         -c:a aac \
@@ -58,7 +57,6 @@ __reencode() {
             -bufsize 2000k \
             -pix_fmt yuv420p \
             -force_key_frames "expr:gte(t,n_forced*5)" \
-            -vf "scale=trunc(min(max(iw\,ih*dar)\,1280)/2)*2:trunc(ow/dar/2)*2" \
             -x264opts bframes=3:cabac=1 \
             -movflags +faststart \
         -c:a aac \
