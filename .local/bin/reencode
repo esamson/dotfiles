@@ -31,10 +31,10 @@ __reencode() {
             -preset ultrafast \
             -profile:v high \
             -level 4.1 \
-            -crf 23 \
+            -crf 16 \
             -tune film \
-            -maxrate 2000k \
-            -bufsize 2000k \
+            -maxrate 8000k \
+            -bufsize 20000k \
             -pix_fmt yuv420p \
             -force_key_frames "expr:gte(t,n_forced*5)" \
             -x264opts bframes=3:cabac=1 \
@@ -51,10 +51,10 @@ __reencode() {
             -preset ultrafast \
             -profile:v high \
             -level 4.1 \
-            -crf 23 \
+            -crf 16 \
             -tune film \
-            -maxrate 2000k \
-            -bufsize 2000k \
+            -maxrate 8000k \
+            -bufsize 20000k \
             -pix_fmt yuv420p \
             -force_key_frames "expr:gte(t,n_forced*5)" \
             -x264opts bframes=3:cabac=1 \
