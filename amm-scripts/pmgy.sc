@@ -46,7 +46,7 @@ def main(base: Path = pwd) = {
     addr <- nif.getInetAddresses.asScala.toList
     if addr.isSiteLocalAddress
   } yield s"http://${addr.getHostAddress}:$port/$urlPath"
-  println(s"sharing $base at ${url.mkString(" ")}")
+  println(s"sharing $base at\n  * ${url.mkString("\n  * ")}")
 
   sys.props("config.file") = tmp().toString()
   sys.props("play.http.secret.key") = "secret"
