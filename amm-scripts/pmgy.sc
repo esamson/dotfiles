@@ -65,7 +65,12 @@ def main(base: Path = pwd) = {
     import components.{defaultActionBuilder => Action}
   {
     case GET(request) =>
-      println(s"$request: ${request.headers}")
+      println(s"\n> $request")
+      for {
+        (header, value) <- request.headers.headers
+      } {
+        println(s"  * $header: $value")
+      }
       val target = if (base.isDir) {
         if (request.target.path == "/") {
           base.toNIO
