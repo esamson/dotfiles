@@ -27,6 +27,7 @@ import play.core.server.{AkkaHttpServer, ServerConfig}
 import play.utils.UriEncoding
 
 import scala.collection.JavaConverters._
+import scala.util.Try
 import scalatags.Text
 import scalatags.Text.all._
 
@@ -207,7 +208,7 @@ def main(base: Path = pwd) = {
     println("'q' <enter> quits")
     if (url.nonEmpty &&
         (base.isDir || checkMimeType(base.toString()).startsWith("text"))) {
-      Desktop.getDesktop.browse(URI.create(url.head))
+      Try(Desktop.getDesktop.browse(URI.create(url.head)))
     }
     var key = System.in.read()
     while (key != 'q') {
