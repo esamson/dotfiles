@@ -14,6 +14,7 @@ import java.awt.Desktop
 import java.net.{NetworkInterface, URI}
 import java.nio.charset.StandardCharsets.UTF_8
 import java.nio.file.Files
+import java.util.concurrent.Semaphore
 
 import akka.stream.scaladsl.{FileIO, StreamConverters}
 import ammonite.ops.ImplicitWd._
@@ -204,19 +205,17 @@ def main(base: Path = pwd) = {
   }
   }
 
-  try {
-    println("'q' <enter> quits")
-    if (url.nonEmpty &&
-        (base.isDir || checkMimeType(base.toString()).startsWith("text"))) {
-      Try(Desktop.getDesktop.browse(URI.create(url.head)))
+  println("<ctrl>-c quits")
+  Runtime.getRuntime.addShutdownHook(new Thread() {
+    override def run() = {
+      println("stopping")
+      server.stop()
+      println("bye")
     }
-    var key = System.in.read()
-    while (key != 'q') {
-      key = System.in.read()
-    }
-  } finally {
-    println("stopping")
-    server.stop()
-    println("bye")
+  })
+  if (url.nonEmpty &&
+      (base.isDir || checkMimeType(base.toString()).startsWith("text"))) {
+    Try(Desktop.getDesktop.browse(URI.create(url.head)))
   }
+  new Semaphore(0).acquire()
 }
