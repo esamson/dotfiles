@@ -9,8 +9,8 @@
  * requires http://ammonite.io/
  */
 
-import $ivy.`com.atlassian.commonmark:commonmark:0.8.0`
-import $ivy.`com.atlassian.commonmark:commonmark-ext-gfm-tables:0.8.0`
+import $ivy.`com.atlassian.commonmark:commonmark:0.11.0`
+import $ivy.`com.atlassian.commonmark:commonmark-ext-gfm-tables:0.11.0`
 import $ivy.`com.lihaoyi::scalatags:0.6.7`
 import $ivy.`net.sourceforge.plantuml:plantuml:1.2018.2`
 
