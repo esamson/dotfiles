@@ -1,6 +1,7 @@
 [user]
 	name = Edward Samson
 	email = edward@samson.ph
+	signingkey = 8F92F2692C4214D6
 [core]
 	excludesfile = ~/.gitignore_global
 [filter "lfs"]
@@ -23,3 +24,5 @@
 	cleanup = scissors
 [mergetool]
 	keepBackup = false
+[gpg]
+	program = gpg2
