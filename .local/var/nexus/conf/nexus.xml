@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
- ! This is really of no use in $HOME but should go to
- ! /usr/local/var/nexus/conf/nexus.xml
- -->
 <nexusConfiguration>
   <version>2.8.0</version>
-  <nexusVersion>2.13.0-01</nexusVersion>
+  <nexusVersion>2.14.5-02</nexusVersion>
   <globalConnectionSettings>
     <connectionTimeout>20000</connectionTimeout>
     <retrievalRetryCount>3</retrievalRetryCount>
@@ -191,6 +187,7 @@
           <memberRepository>spark-jobserver</memberRepository>
           <memberRepository>clojars</memberRepository>
           <memberRepository>cloudera</memberRepository>
+          <memberRepository>tpolecat</memberRepository>
         </memberRepositories>
       </externalConfiguration>
     </repository>
@@ -562,6 +559,37 @@
         </memberRepositories>
       </externalConfiguration>
     </repository>
+    <repository>
+      <id>tpolecat</id>
+      <name>tpolecat Bintray</name>
+      <providerRole>org.sonatype.nexus.proxy.repository.Repository</providerRole>
+      <providerHint>maven2</providerHint>
+      <localStatus>IN_SERVICE</localStatus>
+      <notFoundCacheActive>true</notFoundCacheActive>
+      <notFoundCacheTTL>1440</notFoundCacheTTL>
+      <userManaged>true</userManaged>
+      <exposed>true</exposed>
+      <browseable>true</browseable>
+      <writePolicy>READ_ONLY</writePolicy>
+      <indexable>true</indexable>
+      <searchable>true</searchable>
+      <localStorage>
+        <provider>file</provider>
+      </localStorage>
+      <remoteStorage>
+        <url>https://dl.bintray.com/tpolecat/maven/</url>
+      </remoteStorage>
+      <externalConfiguration>
+        <repositoryPolicy>RELEASE</repositoryPolicy>
+        <checksumPolicy>WARN</checksumPolicy>
+        <fileTypeValidation>true</fileTypeValidation>
+        <downloadRemoteIndex>true</downloadRemoteIndex>
+        <artifactMaxAge>-1</artifactMaxAge>
+        <metadataMaxAge>1440</metadataMaxAge>
+        <itemMaxAge>1440</itemMaxAge>
+        <autoBlockActive>true</autoBlockActive>
+      </externalConfiguration>
+    </repository>
   </repositories>
   <repositoryGrouping>
     <pathMappings>
@@ -654,12 +682,38 @@
   </repositoryTargets>
   <tasks>
     <task>
+      <id>2</id>
+      <name>Publish All Indexes</name>
+      <enabled>true</enabled>
+      <type>PublishIndexesTask</type>
+      <status>SUBMITTED</status>
+      <nextRun>1523743200000</nextRun>
+      <schedule>
+        <type>daily</type>
+        <startDate>1449698400000</startDate>
+      </schedule>
+      <properties>
+        <property>
+          <key>.name</key>
+          <value>Publish All Indexes</value>
+        </property>
+        <property>
+          <key>repositoryId</key>
+          <value>all_repo</value>
+        </property>
+        <property>
+          <key>.id</key>
+          <value>2</value>
+        </property>
+      </properties>
+    </task>
+    <task>
       <id>1</id>
       <name>Update All Indexes</name>
       <enabled>true</enabled>
       <type>UpdateIndexTask</type>
       <status>SUBMITTED</status>
-      <nextRun>1453550400000</nextRun>
+      <nextRun>1523707200000</nextRun>
       <schedule>
         <type>daily</type>
         <startDate>1449748800000</startDate>
@@ -689,7 +743,7 @@
       <enabled>true</enabled>
       <type>OptimizeIndexTask</type>
       <status>SUBMITTED</status>
-      <nextRun>1453492800000</nextRun>
+      <nextRun>1523736000000</nextRun>
       <schedule>
         <type>daily</type>
         <startDate>1450468800000</startDate>
@@ -709,38 +763,12 @@
         </property>
       </properties>
     </task>
-    <task>
-      <id>2</id>
-      <name>Publish All Indexes</name>
-      <enabled>true</enabled>
-      <type>PublishIndexesTask</type>
-      <status>SUBMITTED</status>
-      <nextRun>1453500000000</nextRun>
-      <schedule>
-        <type>daily</type>
-        <startDate>1449698400000</startDate>
-      </schedule>
-      <properties>
-        <property>
-          <key>.name</key>
-          <value>Publish All Indexes</value>
-        </property>
-        <property>
-          <key>repositoryId</key>
-          <value>all_repo</value>
-        </property>
-        <property>
-          <key>.id</key>
-          <value>2</value>
-        </property>
-      </properties>
-    </task>
   </tasks>
   <smtpConfiguration>
     <hostname>smtp-host</hostname>
     <port>25</port>
     <username>smtp-username</username>
-    <password>{hfhecXJZW8IH1Z1144yrFnUMD4w/uWTJAaiVb1dcX60=}</password>
+    <password>{VaOAQNphYwUHoU623TUcG6XISkCush5VnZYnXLELfys=}</password>
     <systemEmailAddress>system@nexus.org</systemEmailAddress>
   </smtpConfiguration>
   <notification />
