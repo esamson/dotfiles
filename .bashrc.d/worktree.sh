@@ -57,7 +57,7 @@ __worktree_in_maindir() {
 }
 
 __worktree_in_workdir() {
-    MAIN_DIR=$(cat .git | sed 's/gitdir: //' | sed 's/\.git.*//')
+    MAIN_DIR=$(cat .git | sed 's/gitdir: //' | sed 's/\/\.git.*//')
 
     if [ -z "$1" ]; then
         echo "In worktree $PWD"
@@ -68,6 +68,48 @@ __worktree_in_workdir() {
     else
         __worktree_cd $MAIN_DIR $1
     fi
+}
+
+__worktree_complete() {
+    local list=""
+
+    if [ -d ".git" ]; then
+        MAIN_DIR=$PWD
+    elif [ -f ".git" ]; then
+        MAIN_DIR=$(cat .git | sed 's/gitdir: //' | sed 's/\/\.git.*//')
+        list="--main"
+        current_tree=$(cat .git | sed 's/gitdir: //')
+    fi
+
+    if [ -z "$MAIN_DIR" ]; then
+        COMPREPLY=()
+        return
+    fi
+
+    if [ ! -d "$MAIN_DIR/.git/worktrees" ]; then
+        COMPREPLY=()
+        return
+    fi
+
+    if [ $COMP_CWORD -gt 1 ]; then
+        COMPREPLY=()
+        return
+    fi
+
+    local cur=${COMP_WORDS[COMP_CWORD]}
+
+    for worktree in $MAIN_DIR/.git/worktrees/* ; do
+        if [ "$current_tree" != "$worktree" ]; then
+            name=$(basename $worktree)
+            if [ -z "$list" ]; then
+                list="$name"
+            else
+                list="$list $name"
+            fi
+        fi
+    done
+
+    COMPREPLY=( $(compgen -W "$list" -- $cur) )
 }
  
 worktree() {
@@ -80,3 +122,5 @@ worktree() {
         return 1
     fi
 }
+
+complete -F __worktree_complete worktree
