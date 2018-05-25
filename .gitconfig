@@ -14,6 +14,7 @@
 	templatedir = ~/.gittemplate
 [alias]
 	ff = !sh -c 'branch=$(git symbolic-ref HEAD | cut -d '/' -f 3) && git merge --ff-only origin/$branch'
+	serve = daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/
 [diff]
 	algorithm = histogram
 [fetch]
