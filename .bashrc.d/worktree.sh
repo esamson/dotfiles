@@ -8,9 +8,6 @@
 #     
 #     `worktree <name>` changes current directory to named worktree.
 #     `worktree --main` changes current directory to main working copy.
-#
-# TODO:
-#     * Work from within any subdirectory of a git working copy.
 
 __worktree_cd() {
     MAIN_DIR=$1
@@ -44,41 +41,48 @@ __worktree_ls() {
 }
 
 __worktree_in_maindir() {
-    if [ ! -d ".git/worktrees" ]; then
+    gitdir="$1"
+    targetdir="$2"
+
+    if [ ! -d "$gitdir/.git/worktrees" ]; then
         echo "No worktrees"
         return
     fi
 
-    if [ -z "$1" ]; then
-        __worktree_ls $PWD
+    if [ -z "$targetdir" ]; then
+        __worktree_ls "$gitdir"
     else
-        __worktree_cd $PWD $1
+        __worktree_cd "$gitdir" "$targetdir"
     fi
 }
 
 __worktree_in_workdir() {
-    MAIN_DIR=$(cat .git | sed 's/gitdir: //' | sed 's/\/\.git.*//')
+    gitdir="$1"
+    targetdir="$2"
 
-    if [ -z "$1" ]; then
-        echo "In worktree $PWD"
+    MAIN_DIR=$(cat "$gitdir/.git" | sed 's/gitdir: //' | sed 's/\/\.git.*//')
+
+    if [ -z "$targetdir" ]; then
+        echo "In worktree $gitdir"
         echo "       from $MAIN_DIR"
         echo '`worktree --main` switches to main dir'
         echo
-        __worktree_ls $MAIN_DIR
+        __worktree_ls "$MAIN_DIR"
     else
-        __worktree_cd $MAIN_DIR $1
+        __worktree_cd "$MAIN_DIR" "$targetdir"
     fi
 }
 
 __worktree_complete() {
     local list=""
 
-    if [ -d ".git" ]; then
-        MAIN_DIR=$PWD
-    elif [ -f ".git" ]; then
-        MAIN_DIR=$(cat .git | sed 's/gitdir: //' | sed 's/\/\.git.*//')
+    gitdir=$(git rev-parse --show-toplevel)
+    if [ -d "$gitdir/.git" ]; then
+        MAIN_DIR=$gitdir
+    elif [ -f "$gitdir/.git" ]; then
+        MAIN_DIR=$(cat "$gitdir/.git" | sed 's/gitdir: //' | sed 's/\/\.git.*//')
         list="--main"
-        current_tree=$(cat .git | sed 's/gitdir: //')
+        current_tree=$(cat "$gitdir/.git" | sed 's/gitdir: //')
     fi
 
     if [ -z "$MAIN_DIR" ]; then
@@ -113,10 +117,11 @@ __worktree_complete() {
 }
  
 worktree() {
-    if [ -d ".git" ]; then
-        __worktree_in_maindir $*
-    elif [ -f ".git" ]; then
-        __worktree_in_workdir $*
+    gitdir=$(git rev-parse --show-toplevel)
+    if [ -d "$gitdir/.git" ]; then
+        __worktree_in_maindir "$gitdir" $*
+    elif [ -f "$gitdir/.git" ]; then
+        __worktree_in_workdir "$gitdir" $*
     else
         echo "Not in a git workspace"
         return 1
