@@ -40,7 +40,7 @@
         <url>https://repo1.maven.org/maven2/</url>
       </remoteStorage>
       <externalConfiguration>
-        <proxyMode>ALLOW</proxyMode>
+        <proxyMode>BLOCKED_AUTO</proxyMode>
         <artifactMaxAge>-1</artifactMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <cleanseRepositoryMetadata>false</cleanseRepositoryMetadata>
@@ -73,7 +73,7 @@
         <url>https://repository.apache.org/snapshots/</url>
       </remoteStorage>
       <externalConfiguration>
-        <proxyMode>ALLOW</proxyMode>
+        <proxyMode>BLOCKED_AUTO</proxyMode>
         <artifactMaxAge>1440</artifactMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <cleanseRepositoryMetadata>false</cleanseRepositoryMetadata>
@@ -220,6 +220,7 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
+        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -251,6 +252,7 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
+        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -282,6 +284,7 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
+        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -303,6 +306,7 @@
         <memberRepositories>
           <memberRepository>ivy-releases</memberRepository>
           <memberRepository>sbt-plugin-releases</memberRepository>
+          <memberRepository>idio</memberRepository>
         </memberRepositories>
       </externalConfiguration>
     </repository>
@@ -335,6 +339,7 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
+        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -366,6 +371,7 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
+        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -397,7 +403,7 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
-        <proxyMode>ALLOW</proxyMode>
+        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -429,6 +435,7 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
+        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -460,6 +467,7 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
+        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -488,6 +496,7 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
+        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -536,6 +545,7 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
+        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -584,6 +594,38 @@
         <checksumPolicy>WARN</checksumPolicy>
         <fileTypeValidation>true</fileTypeValidation>
         <downloadRemoteIndex>true</downloadRemoteIndex>
+        <artifactMaxAge>-1</artifactMaxAge>
+        <metadataMaxAge>1440</metadataMaxAge>
+        <itemMaxAge>1440</itemMaxAge>
+        <autoBlockActive>true</autoBlockActive>
+        <proxyMode>BLOCKED_AUTO</proxyMode>
+      </externalConfiguration>
+    </repository>
+    <repository>
+      <id>idio</id>
+      <name>Idio Ivy Repo</name>
+      <providerRole>org.sonatype.nexus.proxy.repository.Repository</providerRole>
+      <providerHint>maven2</providerHint>
+      <localStatus>IN_SERVICE</localStatus>
+      <notFoundCacheActive>true</notFoundCacheActive>
+      <notFoundCacheTTL>1440</notFoundCacheTTL>
+      <userManaged>true</userManaged>
+      <exposed>true</exposed>
+      <browseable>true</browseable>
+      <writePolicy>READ_ONLY</writePolicy>
+      <indexable>true</indexable>
+      <searchable>true</searchable>
+      <localStorage>
+        <provider>file</provider>
+      </localStorage>
+      <remoteStorage>
+        <url>https://dl.bintray.com/idio/sbt-plugins/</url>
+      </remoteStorage>
+      <externalConfiguration>
+        <repositoryPolicy>RELEASE</repositoryPolicy>
+        <checksumPolicy>WARN</checksumPolicy>
+        <fileTypeValidation>true</fileTypeValidation>
+        <downloadRemoteIndex>false</downloadRemoteIndex>
         <artifactMaxAge>-1</artifactMaxAge>
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
@@ -687,7 +729,7 @@
       <enabled>true</enabled>
       <type>PublishIndexesTask</type>
       <status>SUBMITTED</status>
-      <nextRun>1523743200000</nextRun>
+      <nextRun>1527458400000</nextRun>
       <schedule>
         <type>daily</type>
         <startDate>1449698400000</startDate>
@@ -713,7 +755,7 @@
       <enabled>true</enabled>
       <type>UpdateIndexTask</type>
       <status>SUBMITTED</status>
-      <nextRun>1523707200000</nextRun>
+      <nextRun>1527422400000</nextRun>
       <schedule>
         <type>daily</type>
         <startDate>1449748800000</startDate>
@@ -743,7 +785,7 @@
       <enabled>true</enabled>
       <type>OptimizeIndexTask</type>
       <status>SUBMITTED</status>
-      <nextRun>1523736000000</nextRun>
+      <nextRun>1527451200000</nextRun>
       <schedule>
         <type>daily</type>
         <startDate>1450468800000</startDate>
@@ -768,7 +810,7 @@
     <hostname>smtp-host</hostname>
     <port>25</port>
     <username>smtp-username</username>
-    <password>{VaOAQNphYwUHoU623TUcG6XISkCush5VnZYnXLELfys=}</password>
+    <password>{gU7Lu3Txsw4H/TJMqsX8u3ffSkz2rWszjvr/lBwyTkk=}</password>
     <systemEmailAddress>system@nexus.org</systemEmailAddress>
   </smtpConfiguration>
   <notification />
