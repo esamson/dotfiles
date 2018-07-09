@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <nexusConfiguration>
   <version>2.8.0</version>
-  <nexusVersion>2.14.5-02</nexusVersion>
+  <nexusVersion>2.14.8-01</nexusVersion>
   <globalConnectionSettings>
     <connectionTimeout>20000</connectionTimeout>
     <retrievalRetryCount>3</retrievalRetryCount>
@@ -40,7 +40,7 @@
         <url>https://repo1.maven.org/maven2/</url>
       </remoteStorage>
       <externalConfiguration>
-        <proxyMode>BLOCKED_AUTO</proxyMode>
+        <proxyMode>ALLOW</proxyMode>
         <artifactMaxAge>-1</artifactMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <cleanseRepositoryMetadata>false</cleanseRepositoryMetadata>
@@ -73,7 +73,7 @@
         <url>https://repository.apache.org/snapshots/</url>
       </remoteStorage>
       <externalConfiguration>
-        <proxyMode>BLOCKED_AUTO</proxyMode>
+        <proxyMode>ALLOW</proxyMode>
         <artifactMaxAge>1440</artifactMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <cleanseRepositoryMetadata>false</cleanseRepositoryMetadata>
@@ -188,6 +188,8 @@
           <memberRepository>clojars</memberRepository>
           <memberRepository>cloudera</memberRepository>
           <memberRepository>tpolecat</memberRepository>
+          <memberRepository>hortonworks</memberRepository>
+          <memberRepository>conjars</memberRepository>
         </memberRepositories>
       </externalConfiguration>
     </repository>
@@ -220,7 +222,6 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
-        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -252,7 +253,6 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
-        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -284,7 +284,6 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
-        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -339,7 +338,6 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
-        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -371,7 +369,6 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
-        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -403,7 +400,7 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
-        <proxyMode>BLOCKED_AUTO</proxyMode>
+        <proxyMode>ALLOW</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -435,7 +432,6 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
-        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -467,7 +463,6 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
-        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -496,7 +491,6 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
-        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -545,7 +539,6 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
-        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -598,7 +591,6 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
-        <proxyMode>BLOCKED_AUTO</proxyMode>
       </externalConfiguration>
     </repository>
     <repository>
@@ -630,6 +622,153 @@
         <metadataMaxAge>1440</metadataMaxAge>
         <itemMaxAge>1440</itemMaxAge>
         <autoBlockActive>true</autoBlockActive>
+      </externalConfiguration>
+    </repository>
+    <repository>
+      <id>hortonworks-releases</id>
+      <name>Hortonworks Releases</name>
+      <providerRole>org.sonatype.nexus.proxy.repository.Repository</providerRole>
+      <providerHint>maven2</providerHint>
+      <localStatus>IN_SERVICE</localStatus>
+      <notFoundCacheActive>true</notFoundCacheActive>
+      <notFoundCacheTTL>1440</notFoundCacheTTL>
+      <userManaged>true</userManaged>
+      <exposed>true</exposed>
+      <browseable>true</browseable>
+      <writePolicy>READ_ONLY</writePolicy>
+      <indexable>true</indexable>
+      <searchable>true</searchable>
+      <localStorage>
+        <provider>file</provider>
+      </localStorage>
+      <remoteStorage>
+        <url>http://repo.hortonworks.com/content/repositories/releases/</url>
+      </remoteStorage>
+      <externalConfiguration>
+        <repositoryPolicy>RELEASE</repositoryPolicy>
+        <checksumPolicy>WARN</checksumPolicy>
+        <fileTypeValidation>true</fileTypeValidation>
+        <downloadRemoteIndex>true</downloadRemoteIndex>
+        <artifactMaxAge>-1</artifactMaxAge>
+        <metadataMaxAge>1440</metadataMaxAge>
+        <itemMaxAge>1440</itemMaxAge>
+        <autoBlockActive>true</autoBlockActive>
+      </externalConfiguration>
+    </repository>
+    <repository>
+      <id>hortonworks-jetty-hadoop</id>
+      <name>Hortonworks Jetty Hadoop</name>
+      <providerRole>org.sonatype.nexus.proxy.repository.Repository</providerRole>
+      <providerHint>maven2</providerHint>
+      <localStatus>IN_SERVICE</localStatus>
+      <notFoundCacheActive>true</notFoundCacheActive>
+      <notFoundCacheTTL>1440</notFoundCacheTTL>
+      <userManaged>true</userManaged>
+      <exposed>true</exposed>
+      <browseable>true</browseable>
+      <writePolicy>READ_ONLY</writePolicy>
+      <indexable>true</indexable>
+      <searchable>true</searchable>
+      <localStorage>
+        <provider>file</provider>
+      </localStorage>
+      <remoteStorage>
+        <url>http://repo.hortonworks.com/content/repositories/releases/</url>
+      </remoteStorage>
+      <externalConfiguration>
+        <repositoryPolicy>RELEASE</repositoryPolicy>
+        <checksumPolicy>WARN</checksumPolicy>
+        <fileTypeValidation>true</fileTypeValidation>
+        <downloadRemoteIndex>true</downloadRemoteIndex>
+        <artifactMaxAge>-1</artifactMaxAge>
+        <metadataMaxAge>1440</metadataMaxAge>
+        <itemMaxAge>1440</itemMaxAge>
+        <autoBlockActive>true</autoBlockActive>
+      </externalConfiguration>
+    </repository>
+    <repository>
+      <id>hortonworks-re-hosted</id>
+      <name>Hortonworks Re-hosted</name>
+      <providerRole>org.sonatype.nexus.proxy.repository.Repository</providerRole>
+      <providerHint>maven2</providerHint>
+      <localStatus>IN_SERVICE</localStatus>
+      <notFoundCacheActive>true</notFoundCacheActive>
+      <notFoundCacheTTL>1440</notFoundCacheTTL>
+      <userManaged>true</userManaged>
+      <exposed>true</exposed>
+      <browseable>true</browseable>
+      <writePolicy>READ_ONLY</writePolicy>
+      <indexable>true</indexable>
+      <searchable>true</searchable>
+      <localStorage>
+        <provider>file</provider>
+      </localStorage>
+      <remoteStorage>
+        <url>http://repo.hortonworks.com/content/repositories/releases/</url>
+      </remoteStorage>
+      <externalConfiguration>
+        <repositoryPolicy>RELEASE</repositoryPolicy>
+        <checksumPolicy>WARN</checksumPolicy>
+        <fileTypeValidation>true</fileTypeValidation>
+        <downloadRemoteIndex>true</downloadRemoteIndex>
+        <artifactMaxAge>-1</artifactMaxAge>
+        <metadataMaxAge>1440</metadataMaxAge>
+        <itemMaxAge>1440</itemMaxAge>
+        <autoBlockActive>true</autoBlockActive>
+      </externalConfiguration>
+    </repository>
+    <repository>
+      <id>conjars</id>
+      <name>Conjars</name>
+      <providerRole>org.sonatype.nexus.proxy.repository.Repository</providerRole>
+      <providerHint>maven2</providerHint>
+      <localStatus>IN_SERVICE</localStatus>
+      <notFoundCacheActive>true</notFoundCacheActive>
+      <notFoundCacheTTL>1440</notFoundCacheTTL>
+      <userManaged>true</userManaged>
+      <exposed>true</exposed>
+      <browseable>true</browseable>
+      <writePolicy>READ_ONLY</writePolicy>
+      <indexable>true</indexable>
+      <searchable>true</searchable>
+      <localStorage>
+        <provider>file</provider>
+      </localStorage>
+      <remoteStorage>
+        <url>https://conjars.org/repo/</url>
+      </remoteStorage>
+      <externalConfiguration>
+        <repositoryPolicy>RELEASE</repositoryPolicy>
+        <checksumPolicy>WARN</checksumPolicy>
+        <fileTypeValidation>true</fileTypeValidation>
+        <downloadRemoteIndex>true</downloadRemoteIndex>
+        <artifactMaxAge>-1</artifactMaxAge>
+        <metadataMaxAge>1440</metadataMaxAge>
+        <itemMaxAge>1440</itemMaxAge>
+        <autoBlockActive>true</autoBlockActive>
+      </externalConfiguration>
+    </repository>
+    <repository>
+      <id>hortonworks</id>
+      <name>Hortonworks Repositories</name>
+      <providerRole>org.sonatype.nexus.proxy.repository.GroupRepository</providerRole>
+      <providerHint>maven2</providerHint>
+      <localStatus>IN_SERVICE</localStatus>
+      <notFoundCacheTTL>15</notFoundCacheTTL>
+      <userManaged>true</userManaged>
+      <exposed>true</exposed>
+      <browseable>true</browseable>
+      <writePolicy>READ_ONLY</writePolicy>
+      <indexable>true</indexable>
+      <localStorage>
+        <provider>file</provider>
+      </localStorage>
+      <externalConfiguration>
+        <memberRepositories>
+          <memberRepository>hortonworks-releases</memberRepository>
+          <memberRepository>hortonworks-jetty-hadoop</memberRepository>
+          <memberRepository>hortonworks-re-hosted</memberRepository>
+        </memberRepositories>
       </externalConfiguration>
     </repository>
   </repositories>
@@ -724,38 +863,12 @@
   </repositoryTargets>
   <tasks>
     <task>
-      <id>2</id>
-      <name>Publish All Indexes</name>
-      <enabled>true</enabled>
-      <type>PublishIndexesTask</type>
-      <status>SUBMITTED</status>
-      <nextRun>1527458400000</nextRun>
-      <schedule>
-        <type>daily</type>
-        <startDate>1449698400000</startDate>
-      </schedule>
-      <properties>
-        <property>
-          <key>.name</key>
-          <value>Publish All Indexes</value>
-        </property>
-        <property>
-          <key>repositoryId</key>
-          <value>all_repo</value>
-        </property>
-        <property>
-          <key>.id</key>
-          <value>2</value>
-        </property>
-      </properties>
-    </task>
-    <task>
       <id>1</id>
       <name>Update All Indexes</name>
       <enabled>true</enabled>
       <type>UpdateIndexTask</type>
       <status>SUBMITTED</status>
-      <nextRun>1527422400000</nextRun>
+      <nextRun>1531137600000</nextRun>
       <schedule>
         <type>daily</type>
         <startDate>1449748800000</startDate>
@@ -785,7 +898,7 @@
       <enabled>true</enabled>
       <type>OptimizeIndexTask</type>
       <status>SUBMITTED</status>
-      <nextRun>1527451200000</nextRun>
+      <nextRun>1531166400000</nextRun>
       <schedule>
         <type>daily</type>
         <startDate>1450468800000</startDate>
@@ -805,12 +918,38 @@
         </property>
       </properties>
     </task>
+    <task>
+      <id>2</id>
+      <name>Publish All Indexes</name>
+      <enabled>true</enabled>
+      <type>PublishIndexesTask</type>
+      <status>SUBMITTED</status>
+      <nextRun>1531173600000</nextRun>
+      <schedule>
+        <type>daily</type>
+        <startDate>1449698400000</startDate>
+      </schedule>
+      <properties>
+        <property>
+          <key>.name</key>
+          <value>Publish All Indexes</value>
+        </property>
+        <property>
+          <key>repositoryId</key>
+          <value>all_repo</value>
+        </property>
+        <property>
+          <key>.id</key>
+          <value>2</value>
+        </property>
+      </properties>
+    </task>
   </tasks>
   <smtpConfiguration>
     <hostname>smtp-host</hostname>
     <port>25</port>
     <username>smtp-username</username>
-    <password>{gU7Lu3Txsw4H/TJMqsX8u3ffSkz2rWszjvr/lBwyTkk=}</password>
+    <password>{IG0pQdqGwIcHflfztEWhO2wkG4yhV6TkuOB4SwRZ2vw=}</password>
     <systemEmailAddress>system@nexus.org</systemEmailAddress>
   </smtpConfiguration>
   <notification />
