@@ -15,7 +15,7 @@ find_jar() {
     lib=$1
     found="$TMPDIR"lib.found.$RANDOM
 
-    find $IVY_CACHE_DIR $COURSIER_CACHE_DIR -ipath "*$lib*-javadoc.jar" > $found
+    find -L $IVY_CACHE_DIR $COURSIER_CACHE_DIR -ipath "*$lib*-javadoc.jar" > $found
     declare -a jars
     count=0
     while read jar; do
@@ -70,7 +70,7 @@ find_html() {
     name=$1
     found="$TMPDIR"html.found.$RANDOM
 
-    find $extract_dir -ipath "*$name*.html" | sed "s|$extract_dir/||" > $found
+    find -L $extract_dir -ipath "*$name*.html" | sed "s|$extract_dir/||" > $found
     declare -a htmls
     count=0
     while read result; do
