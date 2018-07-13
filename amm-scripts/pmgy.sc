@@ -12,6 +12,7 @@ import $ivy.{
 
 import java.awt.Desktop
 import java.net.{NetworkInterface, URI}
+import java.nio.channels.Channels
 import java.nio.charset.StandardCharsets.UTF_8
 import java.nio.file.Files
 import java.util.concurrent.Semaphore
@@ -177,10 +178,15 @@ def main(base: Path = pwd) = {
                 CONTENT_RANGE -> "bytes */%d".format(fileLength)
               )
             } else {
-              val stream = Files.newInputStream(target)
+              println(s"serving range $start - $end")
+              val channel = Files.newByteChannel(target)
 
-              stream.skip(start)
+              val skipStart = System.nanoTime()
+              channel.position(start)
+              val skipDuration = System.nanoTime() - skipStart
+              println(s"skipped $start bytes in $skipDuration ns")
 
+              val stream = Channels.newInputStream(channel)
               val source = StreamConverters.fromInputStream(() => stream)
               Result(
                 header = ResponseHeader(200, Map(
