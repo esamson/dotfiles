@@ -10,6 +10,7 @@ lazy val root = (project in file(".")).settings(
     )),
   name := "amm-scripts",
   libraryDependencies ++= Seq(
+    "com.github.pathikrit" %% "better-files" % "3.5.0",
     "com.lihaoyi" %% "ammonite" % ammoniteVersion cross CrossVersion.full,
     "com.lihaoyi" %% "ammonite-ops" % ammoniteVersion,
     "com.typesafe.play" %% "play" % playVersion,
@@ -18,6 +19,7 @@ lazy val root = (project in file(".")).settings(
     "com.atlassian.commonmark" % "commonmark" % "0.11.0",
     "com.atlassian.commonmark" % "commonmark-ext-gfm-tables" % "0.11.0",
     "com.lihaoyi" %% "scalatags" % "0.6.7",
+    "commons-io" % "commons-io" % "2.6",
     "net.sourceforge.plantuml" % "plantuml" % "1.2018.8"
   )
 )
