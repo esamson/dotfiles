@@ -28,10 +28,6 @@ active=`xdotool getactivewindow`
 
 for window in $windows; do
     if [ "$window" -eq "$active" ] ; then
-        eval $(xdotool getwindowgeometry --shell $window)
-        if [[ "$X" == 0 ]] ; then
-            wmctrl -R -F -r 'Terminal HUD' -e 0,2560,360,1920,1080
-        fi
         xdotool windowminimize $window
         exit
     fi
