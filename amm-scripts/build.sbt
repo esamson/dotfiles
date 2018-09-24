@@ -20,7 +20,7 @@ lazy val root = (project in file(".")).settings(
     "com.atlassian.commonmark" % "commonmark-ext-gfm-tables" % "0.11.0",
     "com.lihaoyi" %% "scalatags" % "0.6.7",
     "commons-io" % "commons-io" % "2.6",
-    "net.sourceforge.plantuml" % "plantuml" % "1.2018.10"
+    "net.sourceforge.plantuml" % "plantuml" % "1.2018.11"
   )
 )
 val ammoniteVersion = "1.0.3"
