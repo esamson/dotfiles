@@ -2,8 +2,7 @@
 #
 # Extract doc JAR from Ivy cache and view in browser.
  
-IVY_CACHE_DIR=~/.ivy2/cache
-COURSIER_CACHE_DIR=~/.coursier/cache
+CACHE_DIRS=(~/.ivy2/cache ~/.coursier/cache ~/.cache/coursier)
 EXTRACT_DIR=~/Documents/references
 
 if [ -z "$1" ]; then
@@ -15,7 +14,12 @@ find_jar() {
     lib=$1
     found="$TMPDIR"lib.found.$RANDOM
 
-    find -L $IVY_CACHE_DIR $COURSIER_CACHE_DIR -ipath "*$lib*-javadoc.jar" > $found
+    for cache_dir in "${CACHE_DIRS[@]}"; do
+        if [ -d "$cache_dir" ]; then
+            find -L $cache_dir -ipath "*$lib*-javadoc.jar" >> $found
+        fi
+    done
+
     declare -a jars
     count=0
     while read jar; do
