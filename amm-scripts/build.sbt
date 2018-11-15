@@ -5,7 +5,7 @@ lazy val root = (project in file(".")).settings(
   inThisBuild(
     List(
       organization := "ph.samson.dotfiles",
-      scalaVersion := "2.12.4",
+      scalaVersion := "2.12.7",
       version := "0.1.0-SNAPSHOT"
     )),
   name := "amm-scripts",
@@ -23,5 +23,5 @@ lazy val root = (project in file(".")).settings(
     "net.sourceforge.plantuml" % "plantuml" % "1.2018.11"
   )
 )
-val ammoniteVersion = "1.0.3"
+val ammoniteVersion = "1.4.2"
 val playVersion = "2.6.7"

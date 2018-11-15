@@ -119,7 +119,7 @@ class FencedCodeBlockRenderer(document: Node) extends HtmlNodeRendererFactory {
               }
               rendered
             } else {
-              targetPath.getBytes
+              os.read.bytes(targetPath)
             }
 
             DatatypeConverter.printBase64Binary(bytes)
