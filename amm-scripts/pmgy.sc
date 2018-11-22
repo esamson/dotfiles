@@ -4,7 +4,7 @@
 
 import $ivy.{
   `com.lihaoyi::scalatags:0.6.7`,
-  `com.lihaoyi::ammonite-ops:1.0.3`,
+  `com.lihaoyi::ammonite-ops:1.4.4`,
   `com.typesafe.play::play:2.6.7`,
   `com.typesafe.play::play-akka-http-server:2.6.7`,
   `org.slf4j:slf4j-nop:1.7.25`
@@ -125,7 +125,7 @@ def main(base: Path = pwd) = {
               meta(charset := "utf-8"),
               meta(name := "viewport",
                 content := "width=device-width, initial-scale=1"),
-              tag("title")(s"${base.segments.last}")
+              tag("title")(s"${base.segments.toList.last}")
             ),
             body(
               h1(
