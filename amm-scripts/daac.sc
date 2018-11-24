@@ -132,8 +132,10 @@ def download(split: Split, progressAccumulator: AtomicLong)(
     val cacheFile =
       cacheDir.resolve(s"${split.fileName}.${split.start}-${split.end}")
 
+    val expected = (split.end - split.start) + 1
+
     if (!Files.exists(cacheFile) ||
-        cacheFile.toFile.length() != split.end - split.start) {
+        cacheFile.toFile.length() != expected) {
       val response = blocking {
         split.req.asBytes
       }
