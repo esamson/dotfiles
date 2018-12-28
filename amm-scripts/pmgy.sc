@@ -4,7 +4,7 @@
 
 import $ivy.{
   `com.lihaoyi::scalatags:0.6.7`,
-  `com.lihaoyi::ammonite-ops:1.4.4`,
+  `com.lihaoyi::ammonite-ops:1.6.0`,
   `com.typesafe.play::play:2.6.7`,
   `com.typesafe.play::play-akka-http-server:2.6.7`,
   `org.slf4j:slf4j-nop:1.7.25`
@@ -39,7 +39,7 @@ def main(base: Path = pwd) = {
   val urlPath = if (base.isDir) {
     ""
   } else {
-    UriEncoding.encodePathSegment(base.name, UTF_8)
+    UriEncoding.encodePathSegment(base.last, UTF_8)
   }
   val url = for {
     nif <- NetworkInterface.getNetworkInterfaces.asScala.toList

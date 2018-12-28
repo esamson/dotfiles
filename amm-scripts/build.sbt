@@ -23,5 +23,5 @@ lazy val root = (project in file(".")).settings(
     "net.sourceforge.plantuml" % "plantuml" % "1.2018.13"
   )
 )
-val ammoniteVersion = "1.4.4"
+val ammoniteVersion = "1.6.0"
 val playVersion = "2.6.7"
