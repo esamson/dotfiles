@@ -30,19 +30,23 @@ if [ $# -gt 0 ]; then
         FILE=${notes[0]}
         echo "Opening note: $FILE"
     else
+        FILE="$DATE $TITLE.md"
         for i in "${!notes[@]}"; do
             echo "[$i]: ${notes[$i]}"
         done
 
         echo
-        echo -n "Which note? [0 - $i]: "
+        echo "Press [ENTER] to create new note $FILE"
+        echo -n "  or pick existing note to open [0 - $i]: "
         read pick
 
         if [ $pick -eq $pick >/dev/null 2>&1 ] \
-        && [ $pick -ge 0 ] \
+        && [ $pick -ge 0 >/dev/null 2>&1 ] \
         && [ $pick -le $i ]; then
             FILE=${notes[$pick]}
             echo "Opening note: $FILE"
+        elif [ -z "$pick" ]; then
+            echo "Creating new note: $FILE"
         else
             echo "No such note: $pick"
             exit 1
