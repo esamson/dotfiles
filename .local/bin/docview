@@ -10,7 +10,7 @@
 #
 # See: https://github.com/coursier/coursier/blob/master/doc/docs/cache.md#location
 CACHE_DIRS=(~/.ivy2/cache ~/.cache/coursier ~/Library/Caches/Coursier)
-EXTRACT_DIR=~/Documents/references
+EXTRACT_DIR=~/.cache/docview
 
 if [ -z "$1" ]; then
     echo "Usage: $0 library [class]"
