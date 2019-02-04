@@ -3,8 +3,7 @@
 # Note taking.
  
 DIR=~/Documents/notes
-DATE=`date "+%Y/%m/%d"`
-FILE=$DATE' notes.md'
+DATE=`date "+%Y-%m-%d"`
 
 if [ $# -gt 0 ]; then
     TITLE=$*
@@ -25,10 +24,8 @@ if [ $# -gt 0 ]; then
     rm $found
 
     if [ ${#notes[@]} -eq 0 ]; then
-        mkdir -p "$DIR/$DATE"
-        FILE="$DATE/$TITLE.md"
+        FILE="$DATE $TITLE.md"
         echo "Creating new note: $FILE"
-        find $DIR -type d -empty -not -path "*$DATE" -delete &
     elif [ ${#notes[@]} -eq 1 ]; then
         FILE=${notes[0]}
         echo "Opening note: $FILE"
@@ -51,6 +48,9 @@ if [ $# -gt 0 ]; then
             exit 1
         fi
     fi
+else
+    FILE="note_$DATE.md"
+    echo "Quick note: $FILE"
 fi
 
 edit() {
