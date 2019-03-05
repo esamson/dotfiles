@@ -27,3 +27,5 @@
 	keepBackup = false
 [gpg]
 	program = gpg2
+[pack]
+	useSparse = true
