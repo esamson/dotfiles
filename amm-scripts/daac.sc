@@ -3,6 +3,10 @@
   *
   * requires http://ammonite.io/
   */
+import $ivy.{
+  `org.scalaj::scalaj-http:2.4.1`
+}
+
 import java.awt.Desktop
 import java.net.HttpURLConnection.HTTP_PARTIAL
 import java.net.{HttpCookie, URI}
