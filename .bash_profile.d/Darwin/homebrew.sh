@@ -10,4 +10,6 @@ if hash brew 2>/dev/null; then
     if [ -r "$homebrew_github_api_token" ]; then
         export HOMEBREW_GITHUB_API_TOKEN="$(cat $homebrew_github_api_token)"
     fi
+
+    export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 fi
