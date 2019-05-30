@@ -5,8 +5,8 @@ LOG=$DIR/.purge.log
 TRASH_CMD=trash-put
 
 if [ "$(uname)" == "Darwin" ]; then
-    # On OS X, use http://hasseg.org/trash/
-    TRASH_CMD="/usr/local/bin/trash -F"
+    # On macOS, use http://hasseg.org/trash/
+    TRASH_CMD="/usr/local/bin/trash -v"
 fi
 
 echo "===== $(date) =====" >> $LOG
