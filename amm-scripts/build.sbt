@@ -20,6 +20,7 @@ lazy val root = (project in file(".")).settings(
     "com.atlassian.commonmark" % "commonmark-ext-gfm-tables" % "0.11.0",
     "com.lihaoyi" %% "scalatags" % "0.6.7",
     "commons-io" % "commons-io" % "2.6",
+    "javax.xml.bind" % "jaxb-api" % "2.3.1",
     "net.sourceforge.plantuml" % "plantuml" % "1.2018.13",
     "org.scalaj" %% "scalaj-http" % "2.4.1"
   )
