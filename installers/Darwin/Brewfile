@@ -1,5 +1,7 @@
 cask_args appdir: "~/Applications"
 tap "homebrew/cask"
+tap "adoptopenjdk/openjdk"
+cask "adoptopenjdk8"
 brew "ammonite-repl"
 brew "bash"
 brew "bash-completion@2"
