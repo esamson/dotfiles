@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+# Usage: pace <command>
+#
+# Execute a command and display a notification on MacOS Notification Center
+# when it finishes.
+
+COMMAND=$*
+echo $COMMAND
+
+START=$(date +"%s")
+(eval $COMMAND)
+EXITCODE=$?
+END=$(date +"%s")
+SECONDS=$(($END-$START))
+TIME="$(($SECONDS / 60)) min $(($SECONDS % 60)) sec"
+
+if [ $EXITCODE -eq 0 ] ; then
+    RESULT="SUCCESS"
+else
+    RESULT="FAIL"
+fi
+
+reattach-to-user-namespace osascript -e "display notification \"$COMMAND\" with title \"$1\" subtitle \"$RESULT $TIME\"" &
+
+exit $EXITCODE
+
