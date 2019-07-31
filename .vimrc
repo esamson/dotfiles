@@ -29,6 +29,9 @@ set directory=$HOME/Downloads//
 set backupdir=$HOME/Downloads//
 set backupskip=/tmp/*,/private/tmp/*
 
+set wildmenu
+set wildmode=longest:list,full
+
 " Disable markdown folding
 let g:vim_markdown_folding_disabled=1
 
