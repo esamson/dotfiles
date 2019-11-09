@@ -11,6 +11,7 @@ call plug#begin()
 Plug 'altercation/vim-colors-solarized'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'derekwyatt/vim-scala'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'jpalardy/vim-slime'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
@@ -56,9 +57,6 @@ map <leader>n :NERDTreeToggle<CR>
 
 " Ignore files in .gitignore
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-
-" Preview Markdown
-autocmd Filetype markdown nmap <leader>p :w \| :silent !remder '%'<CR>
 
 " Live Preview Markdown
 autocmd Filetype markdown nmap <leader>r :w \| :silent !remder-app '%' &<CR>
