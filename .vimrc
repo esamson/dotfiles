@@ -8,14 +8,35 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin()
-Plug 'altercation/vim-colors-solarized'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'derekwyatt/vim-scala'
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
-Plug 'jpalardy/vim-slime'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+" Sensible defaults
 Plug 'tpope/vim-sensible'
+
+" Solarized color scheme
+Plug 'altercation/vim-colors-solarized'
+
+" File system sidebar
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+
+" Fuzzy search for files
+Plug 'ctrlpvim/ctrlp.vim'
+
+" Opens a live preview of the markdown file on a browser
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+
+" Sync content from buffer to another tmux pane
+" For example, try `mux start scala-repl`
+Plug 'jpalardy/vim-slime'
+
+" LSP client
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" Markdown syntax
+" tabular must come before vim-markdown
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+
+" Scala syntax
+Plug 'derekwyatt/vim-scala'
 call plug#end()
 
 set tabstop=4
@@ -37,9 +58,6 @@ set backupdir=$HOME/Downloads//
 set backupskip=/tmp/*,/private/tmp/*
 
 set wildmode=longest:list,full
-
-" Disable markdown folding
-let g:vim_markdown_folding_disabled=1
 
 " Toggle NERDTree
 map <leader>n :NERDTreeToggle<CR>
