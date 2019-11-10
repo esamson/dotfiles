@@ -64,6 +64,3 @@ set wildmode=longest:list,full
 
 " Live Preview Markdown
 autocmd Filetype markdown nmap <leader>r :w \| :silent !remder-app '%' &<CR>
-
-" vim-slime configuration
-let g:slime_target = "tmux"
