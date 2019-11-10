@@ -35,6 +35,9 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 
+" PlantUML syntax
+Plug 'aklt/plantuml-syntax'
+
 " Scala syntax
 Plug 'derekwyatt/vim-scala'
 call plug#end()
