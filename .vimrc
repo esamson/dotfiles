@@ -15,11 +15,8 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'jpalardy/vim-slime'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'tpope/vim-sensible'
 call plug#end()
-
-set autoread
-
-set hlsearch
 
 set tabstop=4
 set shiftwidth=4
@@ -39,7 +36,6 @@ set directory=$HOME/Downloads//
 set backupdir=$HOME/Downloads//
 set backupskip=/tmp/*,/private/tmp/*
 
-set wildmenu
 set wildmode=longest:list,full
 
 " Disable markdown folding
