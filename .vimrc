@@ -62,9 +62,6 @@ set backupskip=/tmp/*,/private/tmp/*
 
 set wildmode=longest:list,full
 
-" Toggle NERDTree
-map <leader>n :NERDTreeToggle<CR>
-
 " Ignores
 " set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 " let g:ctrlp_custom_ignore = {
