@@ -11,7 +11,6 @@ let g:ctrlp_custom_ignore = {
   \ }
 
 if executable('rg')
-    set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
     let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
 
     " rg is fast enough that CtrlP doesn't need to cache
