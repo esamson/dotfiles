@@ -35,14 +35,14 @@ for script in ~/.bash_profile.d/*.sh ; do
 done
 unset script
 
+pathmunge /usr/local/sbin after
+pathmunge $HOME/.local/bin
+pathmunge $HOME/bin
+
 # OS-specific executables
 if [ -d "$HOME/.local/bin/$(uname)" ]; then
     pathmunge "$HOME/.local/bin/$(uname)"
 fi
-
-pathmunge /usr/local/sbin after
-pathmunge $HOME/.local/bin
-pathmunge $HOME/bin
 
 export PATH
 
