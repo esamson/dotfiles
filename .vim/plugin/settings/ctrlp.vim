@@ -11,7 +11,7 @@ let g:ctrlp_custom_ignore = {
   \ }
 
 if executable('rg')
-    let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+    let g:ctrlp_user_command = 'rg %s --files --color=never --hidden --glob ""'
 else
     " Ignore files in .gitignore
     let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
