@@ -12,10 +12,9 @@ let g:ctrlp_custom_ignore = {
 
 if executable('rg')
     let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
-
-    " rg is fast enough that CtrlP doesn't need to cache
-    let g:ctrlp_use_caching = 0
 else
     " Ignore files in .gitignore
     let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 endif
+
+set maxmempattern=8192
