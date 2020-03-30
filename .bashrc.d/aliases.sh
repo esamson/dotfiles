@@ -23,6 +23,9 @@ fi
 alias tmpsbt='cd /tmp/sbt_$USER`pwd`'
 alias tmpsbtclean='mv /tmp/sbt_$USER`pwd` /tmp/sbt_$USER`pwd`/../$RANDOM'
 
+# cd to top of git repo
+alias cdgt='cd $(git rev-parse --show-toplevel)'
+
 # Create a new alias from the last command
 # https://medium.com/the-lazy-developer/an-alias-for-new-aliases-c6500ae0f73e
 new-alias() {
