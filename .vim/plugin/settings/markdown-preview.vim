@@ -59,7 +59,10 @@ let g:mkdp_browserfunc = ''
 let g:mkdp_preview_options = {
     \ 'mkit': {},
     \ 'katex': {},
-    \ 'uml': { 'imageFormat': 'png' },
+    \ 'uml': {
+    \   'server': 'http://localhost:1621',
+    \   'imageFormat': 'png'
+    \ },
     \ 'maid': {},
     \ 'disable_sync_scroll': 0,
     \ 'sync_scroll_type': 'relative',

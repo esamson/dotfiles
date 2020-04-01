@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#
+# Start plantuml server.
+# https://github.com/plantuml/plantuml-server
+ 
+docker run -d -p 1621:8080 plantuml/plantuml-server:jetty
