@@ -1,0 +1,20 @@
+[Animation]
+Frames=2
+
+[Behavior]
+RememberFullscreen=true
+
+[Desktop Entry]
+DefaultProfile=HUD.profile
+
+[Dialogs]
+FirstRun=false
+
+[Favorite Profiles]
+Favorites=HUD.profile
+
+[Window]
+Height=100
+KeepAbove=false
+ShowTabBar=false
+Width=100

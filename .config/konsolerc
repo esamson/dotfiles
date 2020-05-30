@@ -1,0 +1,15 @@
+[Desktop Entry]
+DefaultProfile=HUD.profile
+
+[Favorite Profiles]
+Favorites=HUD.profile
+
+[MainWindow]
+Height 1080=480
+Height 1440=480
+Height 2160=1144
+State=AAAA/wAAAAD9AAAAAAAAAoAAAAHDAAAABAAAAAQAAAAIAAAACPwAAAAA
+ToolBarsMovable=Disabled
+Width 1920=640
+Width 2560=640
+Width 3840=757
