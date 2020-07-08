@@ -1,0 +1,10 @@
+[Unit]
+Description=Calibre Content Server
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/calibre-server --port=2527 "%h/Documents/Calibre"
+
+[Install]
+WantedBy=default.target
