@@ -1,6 +1,9 @@
 [Animation]
 Frames=2
 
+[Appearance]
+Skin=legacy
+
 [Behavior]
 RememberFullscreen=true
 
@@ -17,4 +20,5 @@ Favorites=HUD.profile
 Height=100
 KeepAbove=false
 ShowTabBar=false
+ToggleToFocus=true
 Width=100
