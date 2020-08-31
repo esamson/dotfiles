@@ -1,9 +1,6 @@
 [Animation]
 Frames=2
 
-[Appearance]
-Skin=legacy
-
 [Behavior]
 RememberFullscreen=true
 
