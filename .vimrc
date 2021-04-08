@@ -24,10 +24,6 @@ Plug 'junegunn/fzf.vim'
 " Opens a live preview of the markdown file on a browser
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 
-" Sync content from buffer to another tmux pane
-" For example, try `mux start scala-repl`
-Plug 'jpalardy/vim-slime'
-
 " LSP client
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
