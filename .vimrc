@@ -27,9 +27,6 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 " LSP client
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-" Coc scala plugin
-Plug 'scalameta/coc-metals', {'do': 'yarn install --frozen-lockfile'}
-
 " Markdown syntax
 " tabular must come before vim-markdown
 Plug 'godlygeek/tabular'
