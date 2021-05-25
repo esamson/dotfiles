@@ -1,2 +1,0 @@
-#!/bin/sh
-java $CONSCRIPT_OPTS -jar /Users/esamson/.conscript/sbt-launch.jar @/Users/esamson/.conscript/foundweekends/conscript/cs/launchconfig "$@"
