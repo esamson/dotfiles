@@ -2,8 +2,8 @@
 
 remote_url="$(git config --get --local remote.origin.url)"
 
-if [[ "$remote_url" =~ "LoyalSphere" ]]; then
-    git config --local user.email "edward.samson@cheetahdigital.com"
+if [[ "$remote_url" =~ "paymaya" ]]; then
+    git config --local user.email "edward.samson@paymaya.com"
 elif [[ "$remote_url" =~ "voyager" ]]; then
     git config --local user.email "edward.samson@paymaya.com"
 fi
