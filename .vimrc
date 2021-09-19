@@ -39,6 +39,10 @@ Plug 'aklt/plantuml-syntax'
 Plug 'derekwyatt/vim-scala'
 call plug#end()
 
+" coc.nvim
+" https://scalameta.org/metals/docs/editors/vim
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 set tabstop=4
 set shiftwidth=4
 set expandtab
