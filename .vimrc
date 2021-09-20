@@ -38,6 +38,9 @@ Plug 'aklt/plantuml-syntax'
 
 " Scala syntax
 Plug 'derekwyatt/vim-scala'
+
+" status line
+Plug 'itchyny/lightline.vim'
 call plug#end()
 
 set tabstop=4
@@ -59,6 +62,8 @@ set backupdir=$HOME/Downloads//
 set backupskip=/tmp/*,/private/tmp/*
 
 set wildmode=longest:list,full
+
+set noshowmode
 
 " Live Preview Markdown
 autocmd Filetype markdown nmap <leader>r :w \| :silent !remder-app '%' &<CR>
