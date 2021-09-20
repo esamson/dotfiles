@@ -25,6 +25,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 
 " LSP client
+" https://scalameta.org/metals/docs/editors/vim
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Markdown syntax
@@ -38,10 +39,6 @@ Plug 'aklt/plantuml-syntax'
 " Scala syntax
 Plug 'derekwyatt/vim-scala'
 call plug#end()
-
-" coc.nvim
-" https://scalameta.org/metals/docs/editors/vim
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 set tabstop=4
 set shiftwidth=4
