@@ -65,5 +65,11 @@ set wildmode=longest:list,full
 
 set noshowmode
 
+" Avoid launching Metals while writing a git commit message
+if (&filetype=='gitcommit')
+    let g:coc_start_at_startup=0
+endif
+
+
 " Live Preview Markdown
 autocmd Filetype markdown nmap <leader>r :w \| :silent !remder-app '%' &<CR>
