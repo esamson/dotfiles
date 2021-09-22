@@ -66,7 +66,7 @@ set wildmode=longest:list,full
 set noshowmode
 
 " Avoid launching Metals while writing a git commit message
-if (&filetype=='gitcommit')
+if (&filetype=='gitcommit' || &filetype=='gitrebase')
     let g:coc_start_at_startup=0
 endif
 
