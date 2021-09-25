@@ -8,6 +8,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin()
+
 " Sensible defaults
 Plug 'tpope/vim-sensible'
 
@@ -41,6 +42,10 @@ Plug 'derekwyatt/vim-scala'
 
 " status line
 Plug 'itchyny/lightline.vim'
+
+" Automatically create directories
+Plug 'arp242/auto_mkdir2.vim'
+
 call plug#end()
 
 set tabstop=4
