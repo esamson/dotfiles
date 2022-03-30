@@ -1,5 +1,5 @@
 cargo_home="$HOME/.cargo"
-if [ -f $cargo_home/bin/rustc ]; then
+if [ -d $cargo_home/bin ]; then
     export CARGO_HOME="$cargo_home"
     pathmunge $CARGO_HOME/bin
 fi
