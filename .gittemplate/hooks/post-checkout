@@ -3,8 +3,8 @@
 remote_url="$(git config --get --local remote.origin.url)"
 
 if [[ "$remote_url" =~ "paymaya" ]]; then
-    git config --local user.email "edward.samson@paymaya.com"
+    git config --local user.email "edward.samson@maya.ph"
 elif [[ "$remote_url" =~ "voyager" ]]; then
-    git config --local user.email "edward.samson@paymaya.com"
+    git config --local user.email "edward.samson@maya.ph"
 fi
 
