@@ -13,10 +13,18 @@
 [init]
 	templatedir = ~/.gittemplate
 [alias]
+	dft = difftool
+	dfg = difftool --gui
 	ff = !sh -c 'branch=$(git symbolic-ref HEAD | cut -d '/' -f 3) && git merge --ff-only origin/$branch'
 	serve = daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/
 [diff]
 	algorithm = histogram
+	tool = difftastic
+	guitool = kdiff3
+[difftool]
+	prompt = false
+[difftool "difftastic"]
+	cmd = difft "$LOCAL" "$REMOTE"
 [fetch]
 	prune = true
 [pull]
