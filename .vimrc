@@ -25,10 +25,6 @@ Plug 'junegunn/fzf.vim'
 " Opens a live preview of the markdown file on a browser
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 
-" LSP client
-" https://scalameta.org/metals/docs/editors/vim
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
 " Markdown syntax
 " tabular must come before vim-markdown
 Plug 'godlygeek/tabular'
@@ -69,12 +65,6 @@ set backupskip=/tmp/*,/private/tmp/*
 set wildmode=longest:list,full
 
 set noshowmode
-
-" Avoid launching Metals while writing a git commit message
-if (&filetype=='gitcommit' || &filetype=='gitrebase')
-    let g:coc_start_at_startup=0
-endif
-
 
 " Live Preview Markdown
 autocmd Filetype markdown nmap <leader>r :w \| :silent !remder-app '%' &<CR>
