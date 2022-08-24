@@ -51,7 +51,7 @@ set expandtab
 set wrap
 set linebreak
 set nolist
-set showbreak=↵\ \ \ 
+let &showbreak="\u21aa   "
 
 set number
 set cpoptions+=n
