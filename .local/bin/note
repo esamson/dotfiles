@@ -11,6 +11,14 @@ if [ $# -gt 0 ]; then
     found="$TMPDIR"notes.found.$RANDOM
     if [ "$TITLE" == "--recent" ]; then
         find $DIR/ -mtime -7 -iname '*.md' | sed "s|$DIR/||" > $found
+    elif [ "$1" == "--search" ]; then
+        shift
+        rg --smart-case "$*" $DIR
+        result=$?
+        if [ $result != 0 ]; then
+            echo "No notes on '$*'"
+        fi
+        exit $result
     else
         find $DIR/ -iname "*$TITLE*" | sed "s|$DIR/||" > $found
     fi
