@@ -68,3 +68,6 @@ set noshowmode
 
 " Live Preview Markdown
 autocmd Filetype markdown nmap <leader>r :w \| :silent !remder-app '%' &<CR>
+
+" Spell check on Markdown
+autocmd Filetype markdown setlocal spell spelllang=en_us
