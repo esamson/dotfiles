@@ -1,7 +1,7 @@
 [Appearance]
 AntiAliasFonts=true
 ColorScheme=Solarized
-Font=Source Code Pro,11,-1,5,50,0,0,0,0,0
+Font=PT Mono,12,-1,5,50,0,0,0,0,0
 LineSpacing=0
 
 [General]
