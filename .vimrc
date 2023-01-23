@@ -16,7 +16,7 @@ Plug 'tpope/vim-sensible'
 Plug 'altercation/vim-colors-solarized'
 
 " File system sidebar
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
 
 " Fuzzy search for files
 Plug 'junegunn/fzf', { 'do': './install --bin' }
