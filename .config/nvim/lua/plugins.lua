@@ -34,10 +34,10 @@ return require('packer').startup(function(use)
 
   -- Opens a live preview of the markdown file on a browser
   -- use , { 'do': { -> mkdp#util#install() } }
-  use({
+  use {
     'iamcco/markdown-preview.nvim',
     run = function() vim.fn["mkdp#util#install"]() end,
-  })
+  }
 
   -- Markdown syntax
   -- tabular must come before vim-markdown
@@ -47,8 +47,13 @@ return require('packer').startup(function(use)
   -- PlantUML syntax
   use 'aklt/plantuml-syntax'
 
-  -- Scala syntax
-  use 'derekwyatt/vim-scala'
+  -- Scala Metals
+  use {
+    'scalameta/nvim-metals',
+    requires = {
+      'nvim-lua/plenary.nvim'
+    }
+  }
 
   -- status line
   use 'itchyny/lightline.vim'

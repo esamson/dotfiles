@@ -2,6 +2,7 @@ require('plugins')
 require('mappings')
 require('plugin-settings.fzf')
 require('plugin-settings.markdown-preview')
+require('plugin-settings.nvim-metals')
 require('plugin-settings.nvim-tree')
 require('plugin-settings.vim-markdown')
 
