@@ -66,18 +66,23 @@ else
 fi
 
 edit() {
-    if hash mvim 2>/dev/null; then
-        editor=mvim
-    elif hash gvim 2>/dev/null; then
-        editor=gvim
-    elif hash $EDITOR 2>/dev/null; then
-        editor=$EDITOR
-    else
-        echo 'No editor. Set EDITOR env first.'
-        exit 1
-    fi
+    editors=(
+        nvim-qt
+        neovide
+        mvim
+        gvim
+        $EDITOR
+    )
 
-    $editor "$@"
+    for editor in "${editors[@]}"; do
+        if hash $editor 2>/dev/null; then
+            $editor "$@"
+            exit 0
+        fi
+    done
+
+    echo 'No editor. Set EDITOR env first.'
+    exit 1
 }
 
 edit "$DIR/$FILE"
