@@ -42,3 +42,8 @@
 	enabled = true
 [merge]
 	conflictStyle = zdiff3
+[tag]
+	sort = version:refname
+[versionsort]
+	suffix = -alpha
+	suffix = -beta
