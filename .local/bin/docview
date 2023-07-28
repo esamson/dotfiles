@@ -135,4 +135,8 @@ if [ "$(uname)" == "Darwin" ]; then
     cmd=open
 fi
 
-$cmd "$extract_dir/$html"
+if [ -f "$extract_dir/$html" ]; then
+    $cmd "$extract_dir/$html"
+else
+    $cmd "$extract_dir"
+fi
