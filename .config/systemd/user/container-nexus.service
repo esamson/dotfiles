@@ -23,7 +23,7 @@ ExecStart=/usr/bin/podman run \
 	--name=nexus \
 	--label=io.containers.autoupdate=registry \
 	--publish=8081:8081 \
-	--volume=/media/data/nexus:/sonatype-work:Z \
+	--volume=/media/backup/nexus:/sonatype-work:Z \
 	--user=1000 \
 	--userns=keep-id docker.io/sonatype/nexus:latest
 ExecStop=/usr/bin/podman stop \
