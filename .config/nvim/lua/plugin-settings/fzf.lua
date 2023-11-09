@@ -16,6 +16,7 @@ nnoremap("<leader>fi", ":Files<CR>")
 nnoremap("<leader>H", ":Files ~<CR>")
 nnoremap("<leader>C", ":Colors<CR>")
 nnoremap("<leader><CR>", ":Buffers<CR>")
+nnoremap("<leader>rg", ":RG<CR>")
 nnoremap("<leader>fl", ":Lines<CR>")
 nnoremap("<leader>m", ":History<CR>")
 
