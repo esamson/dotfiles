@@ -76,6 +76,7 @@ edit() {
 
     for editor in "${editors[@]}"; do
         if hash $editor 2>/dev/null; then
+            cd "$DIR"
             $editor "$@"
             exit 0
         fi
