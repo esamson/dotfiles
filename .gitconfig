@@ -18,6 +18,7 @@
 	dfg = difftool --gui
 	ff = !sh -c 'branch=$(git symbolic-ref HEAD | cut -d '/' -f 3) && git merge --ff-only origin/$branch'
 	serve = daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/
+	dagup = dag HEAD @{u}
 [diff]
 	algorithm = histogram
 	tool = difftastic
