@@ -7,3 +7,8 @@ elif [ -f /usr/bin/javac ]; then
     pathmunge $JAVA_HOME/bin
 fi
 unset java_home
+
+if [ -L /etc/alternatives/java_sdk_1.8.0 ]; then
+    # For building projects like pekko
+    export JAVA_8_HOME=$(readlink -f /etc/alternatives/java_sdk_1.8.0)
+fi
