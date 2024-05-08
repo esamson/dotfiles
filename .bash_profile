@@ -21,7 +21,12 @@ OPT=$HOME/.local/opt
 
 export GPG_TTY=$(tty)
 export TMOUT=0
-export EDITOR=vim
+
+if hash nvim 2>/dev/null; then
+    export EDITOR=nvim
+elif hash vim 2>/dev/null; then
+    export EDITOR=vim
+fi
 
 for script in ~/.bash_profile.d/$(uname)/*.sh ; do
     if [ -r $script ] ; then
