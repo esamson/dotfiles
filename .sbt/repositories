@@ -1,5 +1,0 @@
-[repositories]
-  local
-  maven-proxy: http://localhost:8081/nexus/content/groups/public/
-  ivy-proxy: http://localhost:8081/nexus/content/groups/ivy/, [organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]
-
