@@ -46,8 +46,3 @@
 # java version (default: java from PATH, currently $(java -version |& grep version))
 #
 #-java-home <path>
-
-
-# Always use local repositories defined in ~/.sbt/repositories
-#
--Dsbt.override.build.repos=true
