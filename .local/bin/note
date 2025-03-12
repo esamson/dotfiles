@@ -20,7 +20,7 @@ if [ $# -gt 0 ]; then
         fi
         exit $result
     else
-        find $DIR/ -iname "*$TITLE*" | sed "s|$DIR/||" > $found
+        rg --smart-case --sortr=accessed --files-with-matches "$TITLE" $DIR | sed "s|$DIR/||" > $found
     fi
 
     declare -a notes
