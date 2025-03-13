@@ -22,7 +22,7 @@ if [ $# -gt 0 ]; then
     else
         iname_found="$TMPDIR"notes.found.$RANDOM
         rg --smart-case --sort=modified --files-with-matches "$TITLE" $DIR | sed "s|$DIR/||" > $found
-        find $DIR/ -iname "*$TITLE*" | sed "s|$DIR/||" >> $iname_found
+        find $DIR -iname "*$TITLE*" | sed "s|$DIR/||" >> $iname_found
         grep --invert-match --line-regexp --file=$found $iname_found >> $found
         rm $iname_found
     fi
