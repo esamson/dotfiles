@@ -1,5 +1,6 @@
 require('plugins')
 require('mappings')
+require('neovide')
 require('plugin-settings.fzf')
 require('plugin-settings.markdown-preview')
 require('plugin-settings.nvim-metals')
