@@ -48,3 +48,5 @@
 [versionsort]
 	suffix = -alpha
 	suffix = -beta
+[log]
+	date = iso-strict-local
