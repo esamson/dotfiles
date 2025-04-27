@@ -10,6 +10,8 @@
 	required = true
 [push]
 	default = simple
+	autoSetupRemote = true
+	followTags = true
 [init]
 	templatedir = ~/.gittemplate
 	defaultBranch = main
@@ -29,10 +31,13 @@
 	cmd = difft "$LOCAL" "$REMOTE"
 [fetch]
 	prune = true
+	pruneTags = true
+	all = true
 [pull]
 	ff = only
 [commit]
 	cleanup = scissors
+	verbose = true
 [mergetool]
 	keepBackup = false
 [gpg]
@@ -41,6 +46,7 @@
 	useSparse = true
 [rerere]
 	enabled = true
+	autoupdate = true
 [merge]
 	conflictStyle = zdiff3
 [tag]
@@ -53,3 +59,5 @@
 [include]
 	# https://dandavison.github.io/delta/configuration.html
 	path = ~/.config/delta/delta.gitconfig
+[help]
+	autocorrect = prompt
