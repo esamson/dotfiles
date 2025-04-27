@@ -50,3 +50,6 @@
 	suffix = -beta
 [log]
 	date = iso-strict-local
+[include]
+	# https://dandavison.github.io/delta/configuration.html
+	path = ~/.config/delta/delta.gitconfig
