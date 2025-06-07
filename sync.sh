@@ -2,87 +2,53 @@
  
 cd "$(dirname "${BASH_SOURCE}")"
 
-# Copy existing dotfiles into this repo
-function syncDown() {
-    if [[ -n $(git status -s) ]]; then
-        echo "$0: Uncommited changes in dotfiles. Commit them first."
+origin_url=`git remote get-url origin`
+
+dotfiles_dir="$HOME/.dotfiles"
+
+function dotfiles {
+    git --git-dir="$dotfiles_dir" --work-tree="$HOME" $@
+}
+
+backup_dir="$HOME/.config-backup"
+function config_backup {
+    cnf_file="$HOME/$1"
+    bak_file="$backup_dir/$1"
+    mkdir -p "$(dirname $bak_file)"
+    mv "$cnf_file" "$bak_file"
+}
+
+if [ ! -d "$dotfiles_dir" ]; then
+    git clone --bare git@github.com:esamson/dotfiles.git "$dotfiles_dir"
+
+    dotfiles checkout
+    if [ $? = 0 ]; then
+        echo "Checked out config.";
+    else
+        export backup_dir
+        export -f config_backup
+
+        echo "Backing up pre-existing dot files to $backup_dir."
+
+        dotfiles checkout 2>&1 |
+            grep -E "^\s+\S" |
+            awk {'print $1'} |
+            xargs -I {} bash -c 'config_backup "$@"' _ {}
+        dotfiles checkout
+        source ~/.bash_profile
+
+        echo "Checked out config. Review changes from $backup_dir";
+    fi
+    dotfiles config status.showUntrackedFiles no
+else
+    dotfiles_url=`git --git-dir=$dotfiles_dir remote get-url origin`
+
+    if [ "$origin_url" == "$dotfiles_url" ]; then
+        echo "Syncing dotfiles"
+        dotfiles checkout
+        source ~/.bash_profile
+    else
+        echo "Can't sync dotfiles. Different sources: $origin_url vs $dotfiles_url"
         exit 1
     fi
-
-    crontab -l > crontab
-
-    TMPFILE=`mktemp -t syncup.XXX` || exit 1
-    if [ $? -ne 0 ]; then
-        echo "$0: Can't create temp file, exiting..."
-        exit 2
-    fi
-
-    find . -type f \
-        -not -path './.git/*' \
-        -not -path './.gitmodules' \
-        -not -path '*/.git' \
-        -not -path './LICENSE' \
-        -not -path './README.md' \
-        -not -path './amm-scripts/*' \
-        -not -path './crontab' \
-        -not -path './bootstrap' \
-        -not -path './installers/*' \
-        -not -path './sync.sh' \
-        | sed "s|^\./||" > $TMPFILE
-
-    rsync \
-        --files-from $TMPFILE \
-        --verbose \
-        --human-readable \
-        --archive ~ .
-
-    rm $TMPFILE
-    if [[ -n $(git status -s) ]]; then
-        echo "$0: Changes found in $HOME. Review and commit."
-        git diff
-    else
-        echo "$0: $HOME is up to date."
-    fi
-}
-
-# Copy amm scripts
-function syncAmmScripts() {
-    for sc in amm-scripts/*.sc; do
-        name="$(basename ${sc%%.*})"
-        target="$HOME/.local/bin/$name"
-        echo "#!/usr/bin/env amm" > $target
-        cat $sc >> $target
-        chmod +x $target
-    done
-}
-
-# Install dotfiles into home folder
-function syncUp() {
-    crontab crontab
-
-    rsync \
-        --exclude "/.git/" \
-        --exclude "/.gitmodules" \
-        --exclude "**/.git" \
-        --exclude "/LICENSE" \
-        --exclude "/README.md" \
-        --exclude "/amm-scripts" \
-        --exclude "/crontab" \
-        --exclude "/bootstrap" \
-        --exclude "/installers/" \
-        --exclude "/sync.sh" \
-        --verbose \
-        --human-readable \
-        --no-perms \
-        --archive . ~
-
-    syncAmmScripts
-    chmod go-rwx $HOME
-    source ~/.bash_profile
-}
-
-if [ "$1" == "-d" ]; then
-    syncDown;
-else
-    syncUp;
-fi;
+fi
