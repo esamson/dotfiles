@@ -1,7 +1,12 @@
 # dotfiles
 .files
 
-Taking management ideas from [www.atlassian.com/git/tutorials/dotfiles][archive].
+## Why my $HOME has a README.md
+
+If you're wondering why this file (and LICENSE file) is in your home directory,
+this is probably because the dotfiles are taken
+from https://github.com/esamson/dotfiles using management ideas
+from [www.atlassian.com/git/tutorials/dotfiles][archive].
 
 ## On a new machine
 
