@@ -9,7 +9,7 @@ Clone this repo and run the sync script.
 
 ```
 git clone git@github.com:esamson/dotfiles.git
-dotfiles/sync.sh
+sh dotfiles/.local/bin/sync_dotfiles.sh
 ```
 
 This sets up the actual clone in `$HOME/.dotfiles`.
