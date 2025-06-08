@@ -1,5 +1,0 @@
-# Purge ~/Downloads
-12 0,12 * * *     $HOME/.local/bin/purgeOld $HOME/Downloads
-
-# Backup ~/.bash_history
-59 * * * *     $HOME/.local/bin/bash-history-backup
