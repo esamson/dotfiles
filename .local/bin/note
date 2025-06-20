@@ -19,6 +19,12 @@ if [ $# -gt 0 ]; then
             echo "No notes on '$*'"
         fi
         exit $result
+    elif [ "$1" == "--create" ]; then
+        shift
+        TITLE=$*
+        FILE="$DATE $TITLE.md"
+        echo "Creating new note: $FILE"
+        echo $FILE > $found
     else
         iname_found="$TMPDIR"notes.found.$RANDOM
         rg --smart-case --sort=modified --files-with-matches "$TITLE" $DIR | sed "s|$DIR/||" > $found
