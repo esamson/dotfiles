@@ -1,0 +1,6 @@
+[Desktop Entry]
+Exec=/var/home/edward/.config/old-autostart-scripts/ssh-add.sh
+Icon=application-x-executable-script
+Name=ssh-add.sh
+Type=Application
+X-KDE-AutostartScript=true
