@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+# xdg-open for when running inside toolbx container
+ 
+if [ -f /run/.toolboxenv ]; then
+    /usr/bin/flatpak-xdg-open "$@"
+else
+    /usr/bin/xdg-open "$@"
+fi
+
