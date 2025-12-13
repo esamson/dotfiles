@@ -1,4 +1,4 @@
-idea_home=$HOME/.local/opt/idea-IC
+idea_home=$HOME/.local/opt/idea
 if [ -x $idea_home/bin/idea ]; then
     pathmunge $idea_home/bin after
 fi
