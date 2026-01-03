@@ -77,7 +77,6 @@ fi
 
 edit() {
     editors=(
-        idea
         nvim-qt
         neovide
         mvim
