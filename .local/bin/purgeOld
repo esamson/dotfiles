@@ -6,7 +6,7 @@ TRASH_CMD=trash-put
 
 if [ "$(uname)" == "Darwin" ]; then
     # On macOS, use http://hasseg.org/trash/
-    TRASH_CMD="/usr/local/bin/trash -v"
+    TRASH_CMD="trash -v"
 fi
 
 echo "===== $(date) =====" >> $LOG
