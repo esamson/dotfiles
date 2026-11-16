@@ -41,7 +41,6 @@ dnf = {
     "man-pages",
     "mesa-dri-drivers",
     "mesa-vulkan-drivers",
-    "metapac",
     "mtr",
     "nss-mdns",
     "openssh-clients",

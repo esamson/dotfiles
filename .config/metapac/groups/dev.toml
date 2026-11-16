@@ -1,8 +1,23 @@
 dnf = { repos = [
   "copr.fedorainfracloud.org/komapro/metapac",
 ], packages = [
-  "git-delta",
   "metapac",
+  "tmux",
+  "wl-copy",
+  "kdiff3",
+  "dot",
+  "trash-put",
+  "dig",
+  "iperf3",
+  "git-dag",
+  "git-delta",
+  "git-gui",
+  "graphviz",
+  "neovim", "python3-neovim", "neovim-qt",
+  "java", "java-devel", "java-javadoc", "java-jmods", "java-src",
+  "ripgrep",
+  "flatpak-xdg-open",
+  "jpegoptim"
 ] }
 flatpak = { repos = [
   { name = "system:fedora", options = { url = "oci+https://registry.fedoraproject.org" } },
