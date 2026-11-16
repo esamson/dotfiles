@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# When running podman from within toolbx
+exec flatpak-spawn --host podman $@

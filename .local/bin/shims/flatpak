@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# When running flatpak from within toolbx
+exec flatpak-spawn --host flatpak $@
