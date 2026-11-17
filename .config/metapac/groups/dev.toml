@@ -46,6 +46,7 @@ flatpak = { repos = [
   { name = "user:org.kde.kclock", options = { remote = "flathub" } },
   { name = "user:org.kde.kdenlive", options = { remote = "flathub" } },
   { name = "user:org.kde.okular", options = { remote = "flathub" } },
+  { name = "user:org.keepassxc.KeePassXC", options = { remote = "flathub" } },
   { name = "user:org.libreoffice.LibreOffice", options = { remote = "flathub" } },
   { name = "user:org.mozilla.firefox", options = { remote = "flathub" } },
   { name = "user:org.musescore.MuseScore", options = { remote = "flathub" } },
