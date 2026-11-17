@@ -26,6 +26,8 @@ if hash nvim 2>/dev/null; then
     export EDITOR=nvim
 elif hash vim 2>/dev/null; then
     export EDITOR=vim
+else
+    export EDITOR=vi
 fi
 
 for script in ~/.bash_profile.d/$(uname)/*.sh ; do
