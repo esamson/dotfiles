@@ -3,20 +3,19 @@ dnf = { repos = [
 ], packages = [
   "metapac",
   "tmux",
-  "wl-copy",
+  "wl-clipboard",
   "kdiff3",
-  "dot",
-  "trash-put",
-  "dig",
+  "trash-cli",
+  "bind-utils",
   "iperf3",
-  "git-dag",
+  "git-cola",
   "git-delta",
   "git-gui",
   "graphviz",
   "neovim", "python3-neovim", "neovim-qt",
-  "java", "java-devel", "java-javadoc", "java-jmods", "java-src",
+  "java-25-openjdk", "java-25-openjdk-devel", "java-25-openjdk-javadoc", "java-25-openjdk-jmods", "java-25-openjdk-src",
   "ripgrep",
-  "flatpak-xdg-open",
+  "flatpak-xdg-utils",
   "jpegoptim"
 ] }
 flatpak = { repos = [
