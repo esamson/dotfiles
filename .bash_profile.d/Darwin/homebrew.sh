@@ -1,3 +1,8 @@
+# Add Homebrew to PATH
+if [ -x /opt/homebrew/bin/brew ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv bash)"
+fi
+
 # Homebrew bash completion
 if hash brew 2>/dev/null; then
     bash_completion="$(brew --prefix)/etc/profile.d/bash_completion.sh"
