@@ -58,3 +58,13 @@ flatpak = { repos = [
   { name = "user:org.torproject.torbrowser-launcher", options = { remote = "flathub" } },
   { name = "user:org.videolan.VLC", options = { remote = "flathub" } },
 ] }
+cargo = {
+  packages = [
+    {
+      name = "ast-grep",
+      options = {
+        locked = true
+      }
+    }
+  ]
+}

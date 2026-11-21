@@ -9,7 +9,7 @@
 # Backends to enable. These will be merged with any hostname-specific backends
 # from the [hostname_enabled_backends] config table.
 # Default: []
-enabled_backends = ["dnf", "flatpak"]
+enabled_backends = ["dnf", "flatpak", "cargo"]
 
 # If this is `false` all toml files recursively found in the groups folder
 # will be used as group files.
