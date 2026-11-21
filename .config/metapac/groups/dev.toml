@@ -1,5 +1,6 @@
 dnf = { repos = [
   "copr.fedorainfracloud.org/komapro/metapac",
+  "copr.fedorainfracloud.org/dejan/lazygit",
 ], packages = [
   "metapac",
   "tmux",
@@ -11,9 +12,12 @@ dnf = { repos = [
   "git-cola",
   "git-delta",
   "git-gui",
+  "lazygit",
   "graphviz",
   "neovim", "python3-neovim", "neovim-qt",
   "java-25-openjdk", "java-25-openjdk-devel", "java-25-openjdk-javadoc", "java-25-openjdk-jmods", "java-25-openjdk-src",
+  "fd-find",
+  "fzf",
   "ripgrep",
   "flatpak-xdg-utils",
   "jpegoptim"
